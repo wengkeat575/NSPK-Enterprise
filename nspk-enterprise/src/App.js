@@ -8,17 +8,14 @@ const Header = styled('h1')`
   color: #394351;
   font-size: 45px;
   text-align: center;
-
-
 `
 class App extends React.Component{
   render() {
-    return (
-      <div>
-            <Header>NSPK</Header>
-            
-         </div>
-      );
+	return (
+	  <div>
+			<Header>NSPK</Header>
+	  </div>
+	  );
    }
 }
 
