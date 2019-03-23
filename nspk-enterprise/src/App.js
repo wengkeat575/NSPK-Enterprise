@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 import styled from 'styled-components';
-
 import withStyles from "@material-ui/core/styles/withStyles";
-
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import FontSizeChanger from 'react-font-size-changer';
+//import FontSizeChanger from 'react-font-size-changer';
+import { withRouter } from 'react-router-dom';
 
 const Header = styled('h1')`
   background: #CBDCF3;
@@ -30,6 +29,17 @@ const style = {
 };
 
 class App extends React.Component{
+
+  constuctor() {
+    this.routeChange = this.routeChange.bind(this);
+  }
+
+  routeChange() {
+    let path = `newPath`;
+    this.props.history.push(path);
+  }
+
+
   render() {
     //const { classes } = this.props;
     return (
@@ -48,11 +58,28 @@ class App extends React.Component{
       <TextField
           id="standard-uncontrolled"
           label="Employee ID"
-          defaultValue="enter your unique employee Id"
-          
+          type="enter your employee ID"
+          autoComplete="current-ID"
           margin="normal"
+          variant="filled"
+          style={{ Width:450 }}
         />
+        <div></div>
+        <TextField
+          id="standar-uncontrolled"
+          label="Password"
+          type="enter your password"
+          autoComplete="current-password"
+          margin="normal"
+          variant="filled"
+          style={{ Width:450 }}
+        />
+       <div></div>
        
+       <Button variant="contained" size="large" color="primary" onClick="this.routeChange">
+        Sign In
+      </Button>
+      
   </Paper> 
   </Grid>
   </div>
