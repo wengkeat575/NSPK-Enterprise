@@ -5,6 +5,27 @@ var fs = require('fs');
 // Create a service (the app object is just a callback).
 var app = express();
 
+// Auth0 API protect
+// https://auth0.com/blog/react-tutorial-building-and-securing-your-first-app/
+// Auth0 bobgel12@gmail.com
+const jwt = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
+const checkJwt = jwt({
+	secret: jwksRsa.expressJwtSecret({
+	  cache: true,
+	  rateLimit: true,
+	  jwksRequestsPerMinute: 5,
+	  jwksUri: `https://<YOUR_AUTH0_DOMAIN>/.well-known/jwks.json`
+	}),
+  
+	// Validate the audience and the issuer.
+	audience: '<YOUR_AUTH0_CLIENT_ID>',
+	issuer: `https://<YOUR_AUTH0_DOMAIN>/`,
+	algorithms: ['RS256']
+  });
+
+// Use checkJwt as a middleware 
+
 // Dung Code
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
