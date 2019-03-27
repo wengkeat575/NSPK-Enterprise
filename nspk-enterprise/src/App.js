@@ -10,6 +10,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 //import FontSizeChanger from 'react-font-size-changer';
 import { withRouter } from 'react-router-dom';
+import Homepage from './Homepage.js';
+import { BrowserRouter as Router } from 'react-router-dom'
+
+
+
 
 const Header = styled('h1')`
   background: #CBDCF3;
@@ -35,8 +40,9 @@ class App extends React.Component{
   }
 
   routeChange() {
-    let path = `newPath`;
-    this.props.history.push(path);
+    //let path = '/homepage';
+    this.props.push('/Homepage');
+    console.log("hello");
   }
 
 
@@ -75,10 +81,11 @@ class App extends React.Component{
           style={{ Width:450 }}
         />
        <div></div>
-       
-       <Button variant="contained" size="large" color="primary" onClick="this.routeChange">
+       <Router>
+       <Button variant="contained" size="large" color="primary" onClick={this.routeChange}>
         Sign In
       </Button>
+      </Router>
       
   </Paper> 
   </Grid>
