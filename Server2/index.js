@@ -4,6 +4,7 @@ var http = require('http');
 var fs = require('fs');
 // Create a service (the app object is just a callback).
 var app = express();
+const mysql = require('mysql');
 
 // Auth0 API protect
 // https://auth0.com/blog/react-tutorial-building-and-securing-your-first-app/
@@ -45,8 +46,12 @@ app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
 
 // Routes
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
+app.get("/employees/:employeeid", checkJwt, usersRouter);
+app.get("/admin/getallemployees/:from", checkJwt, indexRouter);
+app.get("/admin/get1employees/:employeeid", checkJwt, indexRouter);
+app.post("/admin/updateinfo/", checkJwt, indexRouter);
+
 
 // End Dung Code
 
