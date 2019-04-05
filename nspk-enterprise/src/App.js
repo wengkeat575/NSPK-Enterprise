@@ -13,9 +13,6 @@ import { withRouter } from 'react-router-dom';
 import Homepage from './Homepage.js';
 import { BrowserRouter as Router } from 'react-router-dom'
 
-
-
-
 const Header = styled('h1')`
   background: #CBDCF3;
   color: #394351;
@@ -56,7 +53,7 @@ class App extends React.Component{
             </Header>
       </div>
       <div>
-        <Grid container justify = "center">
+    <Grid container justify = "center">
     <Paper style={style} >
     <Typography  style={{'fontSize': '35px', color : 'primary'}}>
       Employee LogIn
