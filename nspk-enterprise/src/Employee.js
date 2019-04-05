@@ -7,15 +7,15 @@ class Employee extends Component {
     return (
         <div>
           <h2>employee info</h2>
-          <Paper style={{maxHeight: 700}}>
-  <ListItem>
-   hello
-   hkcvkcw
-   khwc w;elj
-   cjkwebvlw
-   
-  </ListItem>
-</Paper>
+          <Paper >
+            <ListItem>
+            hello
+            hkcvkcw
+            khwc w;elj
+            cjkwebvlw
+
+            </ListItem>
+          </Paper>
         </div>
     );
   }
