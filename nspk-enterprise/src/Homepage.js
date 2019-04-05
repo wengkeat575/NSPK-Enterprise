@@ -13,6 +13,7 @@ const Header = styled('h2')`
   color: #394351;
   font-size: 45px;
   text-align: center;
+  margin: 0px;
 `
 class Homepage extends React.Component{
 
@@ -26,13 +27,13 @@ class Homepage extends React.Component{
             </h2>
          
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <ul className="navbar-nav mr-auto">
-              <li><Link to={'/profile'} className="nav-link"> Profile </Link></li>
-              <li><Link to={'/employee'} className="nav-link">Employee</Link></li>
-              <li><Link to={'/about'} className="nav-link">About</Link></li>
+            <ul style={{'list-style': 'none'}} className="navbar-nav mr-auto">
+              <li style={{'float': 'left', 'padding': '16px'}}><Link to={'/profile'} className="nav-link"> Profile </Link></li>
+              <li style={{'float': 'left', 'padding': '16px'}}><Link to={'/employee'} className="nav-link">Employee</Link></li>
+              <li style={{'float': 'left', 'padding': '16px'}}><Link to={'/about'} className="nav-link">About</Link></li>
             </ul>
             </nav>
-            <hr />
+            <br style={{'clear': 'both'}} />
             <Switch>
                 <Route exact path='/profile' component={Profile} />
                 <Route path='/employee' component={Employee} />
