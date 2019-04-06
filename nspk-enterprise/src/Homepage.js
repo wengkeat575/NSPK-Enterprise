@@ -21,16 +21,14 @@ class Homepage extends React.Component {
   render() {
     return (
       <Router>
-            <Header>
-            <h1>NSPK</h1>
+            <Header><h2>NSPK</h2></Header>
           <Switch>
-            <Route path="/signin" component={App} />
             <Route path="/profile" component={Profile} />
             <Route path="/employees" component={Employee} />
             <Route path="/about" component={About} />
             <Route path="/signout" component={Signout} />
+            <Route path="*" component={App} />
           </Switch>
-          </Header>
       </Router>
     );
   }
