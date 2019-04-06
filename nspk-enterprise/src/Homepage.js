@@ -12,17 +12,17 @@ import Signout from "./Signout";
 const Header = styled("h2")`
   background: #cbdcf3;
   color: #394351;
-  font-size: 45px;
+  font-size: 20px;
   text-align: center;
   margin: 0px;
 `;
+
 class Homepage extends React.Component {
   render() {
     return (
       <Router>
-            <Header>NSPK</Header>
-
-
+            <Header>
+            <h1>NSPK</h1>
           <Switch>
             <Route path="/signin" component={App} />
             <Route path="/profile" component={Profile} />
@@ -30,6 +30,7 @@ class Homepage extends React.Component {
             <Route path="/about" component={About} />
             <Route path="/signout" component={Signout} />
           </Switch>
+          </Header>
       </Router>
     );
   }

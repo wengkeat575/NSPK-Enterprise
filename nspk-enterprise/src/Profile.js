@@ -50,7 +50,6 @@ class Profile extends React.Component {
         }}
       >
         <Paper
-          zDepth={2}
           style={{
             margin: "48px",
             padding: "32px",
@@ -58,7 +57,7 @@ class Profile extends React.Component {
             width: "480px"
           }}
         >
-        <h2>Profile</h2>
+        
           <React.Fragment>
             <Grid
               container
@@ -67,6 +66,7 @@ class Profile extends React.Component {
               alignItems="center"
               spacing={24}
             >
+            <h2>Employee Profile</h2>
               <Grid item xs={8} md={6}>
                 <TextField
                   required
@@ -127,13 +127,7 @@ class Profile extends React.Component {
                   fullWidth
                 />
               </Grid>
-            </Grid>
-          </React.Fragment>
-        </Paper>
-        <Grid container direction="row" justify="right" alignItems="center">
-          edit
-        </Grid>
-        <div
+              <div
           style={{
             justifyContent: "center",
             alignItems: "center",
@@ -148,12 +142,18 @@ class Profile extends React.Component {
             <Button
               variant="contained"
               size="large"
+              justifyContent= "center"
+              alignItems= "center"
               onClick={this.handleEdit.bind(this)}
             >
               Edit
             </Button>
           )}
         </div>
+            </Grid>
+          </React.Fragment>
+        </Paper>
+      
       </Paper>
       </div>
     );
