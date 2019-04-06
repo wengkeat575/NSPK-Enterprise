@@ -61,7 +61,7 @@ class App extends React.Component {
           <Grid container justify="center">
             <Paper style={style}>
               <Typography style={{ fontSize: "35px", color: "primary" }}>
-                Employee LogIn
+                Employee Login
               </Typography>
               <TextField
                 id="standard-uncontrolled"
