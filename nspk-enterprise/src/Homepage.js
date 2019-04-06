@@ -21,7 +21,7 @@ class Homepage extends React.Component {
   render() {
     return (
       <Router>
-            <Header><h2>NSPK</h2></Header>
+            <Header><h1>NSPK</h1>
           <Switch>
             <Route path="/profile" component={Profile} />
             <Route path="/employees" component={Employee} />
@@ -29,6 +29,7 @@ class Homepage extends React.Component {
             <Route path="/signout" component={Signout} />
             <Route path="*" component={App} />
           </Switch>
+          </Header>
       </Router>
     );
   }
