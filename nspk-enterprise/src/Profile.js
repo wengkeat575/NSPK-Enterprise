@@ -3,7 +3,7 @@ import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-
+import TopBar from "./TopBar";
 
 const style = {
   marginLeft: 20
@@ -36,9 +36,19 @@ class Profile extends React.Component {
     var fullName = "Kat Tran";
     var employeeID = "1234";
     var position = "CEO";
+    var department = "Finance";
+    var departmentManager = "none";
+
     console.log(this.state.editMode);
     return (
       <div>
+        <TopBar/>
+      <Paper
+        style={{
+          backgroundImage: "url(" + require("./technology.jpg") + ")",
+          height: "100vh"
+        }}
+      >
         <Paper
           zDepth={2}
           style={{
@@ -48,6 +58,7 @@ class Profile extends React.Component {
             width: "480px"
           }}
         >
+        <h2>Profile</h2>
           <React.Fragment>
             <Grid
               container
@@ -62,7 +73,7 @@ class Profile extends React.Component {
                   inputProps={fieldProps}
                   defaultValue={fullName}
                   id="Full Name"
-                  label="Enter your full name"
+                  label="Employee Full Name"
                   fullWidth
                 />
               </Grid>
@@ -72,7 +83,7 @@ class Profile extends React.Component {
                   inputProps={fieldProps}
                   defaultValue={employeeID}
                   id="EmployeeID"
-                  label="Enter employee ID"
+                  label="Employee ID"
                   fullWidth
                 />
               </Grid>
@@ -82,7 +93,7 @@ class Profile extends React.Component {
                   inputProps={fieldProps}
                   defaultValue={dob}
                   id="DateOfBirth"
-                  label="your birthday"
+                  label="Date of Birth"
                   fullWidth
                 />
               </Grid>
@@ -92,29 +103,58 @@ class Profile extends React.Component {
                   inputProps={fieldProps}
                   defaultValue={position}
                   id="position"
-                  label="position"
-                  helperText="your current position"
+                  label="Position"
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={12} />
+              <Grid item xs={8} md={6}>
+                <TextField
+                  required
+                  inputProps={fieldProps}
+                  defaultValue={departmentManager}
+                  id="departmentManager"
+                  label="departmentManager"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={8} md={6}>
+                <TextField
+                  required
+                  inputProps={fieldProps}
+                  defaultValue={department}
+                  id="eDept"
+                  label="Employee Department"
+                  fullWidth
+                />
+              </Grid>
             </Grid>
           </React.Fragment>
         </Paper>
-        <div style={{justifyContent: 'center', alignItems: 'center', marginLeft:'50'}}>
-        {this.state.editMode ? (
-          <Button variant="contained" size="large" color="primary">
-            Save
-          </Button>
-        ) : (
-          <Button
-            variant="contained" size="large"
-            onClick={this.handleEdit.bind(this)}
-          >
-            Edit
-          </Button>
-        )}
+        <Grid container direction="row" justify="right" alignItems="center">
+          edit
+        </Grid>
+        <div
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft: "50"
+          }}
+        >
+          {this.state.editMode ? (
+            <Button variant="contained" size="large" color="primary">
+              Save
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              size="large"
+              onClick={this.handleEdit.bind(this)}
+            >
+              Edit
+            </Button>
+          )}
         </div>
+      </Paper>
       </div>
     );
   }
