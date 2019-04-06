@@ -58,7 +58,7 @@ class Profile extends React.Component {
             width: "480px"
           }}
         >
-        <h2>Profile</h2>
+        
           <React.Fragment>
             <Grid
               container
@@ -67,6 +67,7 @@ class Profile extends React.Component {
               alignItems="center"
               spacing={24}
             >
+            <h2>Profile</h2>
               <Grid item xs={8} md={6}>
                 <TextField
                   required
