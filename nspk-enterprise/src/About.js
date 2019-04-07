@@ -28,7 +28,10 @@ class About extends Component {
         >
 
 <h2>About</h2>
-          NSPK is an
+          NSPK Inc. operates and markets a personal services mobile application.
+          NSPK started in San Jose, California in January 2019. 
+          NPSK offers all sorts of personal services to any people who needed help during their busy schedule. 
+          NPSK is the fastest enterprise company to earned 1 billion dollars in the first quarter of the year.    
         </Paper>
       </Paper>
       </div>

@@ -60,7 +60,7 @@ class App extends React.Component {
       >
           <Grid container justify="center">
             <Paper style={style}>
-              <Typography style={{ fontSize: "35px", color: "primary" }}>
+              <Typography style={{ fontSize: "35px", color: "primary"}}>
                 Employee Login
               </Typography>
               <TextField
