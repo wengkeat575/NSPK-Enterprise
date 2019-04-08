@@ -43,7 +43,7 @@ function Employee(props) {
     {
       name: "Steve",
       department: "Sales",
-      position: "Janitor",
+      position: "Coder",
       email: "steve@gmail.com"
     }
   ];
