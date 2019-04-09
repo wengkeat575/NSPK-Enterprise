@@ -13,7 +13,7 @@ import Salary from "./Salary";
 const Header = styled("h2")`
   background: #cbdcf3;
   color: #394351;
-  font-size: 20px;
+  font-size: 15px;
   text-align: center;
   margin: 0px;
 `;
@@ -24,13 +24,12 @@ class Homepage extends React.Component {
       <Router>
             <Header><h1>NSPK</h1>
           <Switch>
-          <Route path="/salary" component={Salary} />
             <Route path="/profile" component={Profile} />
             <Route path="/employees" component={Employee} />
             <Route path="/about" component={About} />
             <Route path="/signout" component={Signout} />
             <Route path="*" component={App} />
-            
+            <Route path="/salary" component={Salary} />
           </Switch>
           </Header>
       </Router>
