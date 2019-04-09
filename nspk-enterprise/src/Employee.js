@@ -13,6 +13,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TopBar from "./TopBar";
 import Button from "@material-ui/core/Button";
+import List from '@material-ui/core/List';
 
 const styles = theme => ({
   root: {
@@ -97,6 +98,7 @@ function Employee(props) {
 
           </TableBody>
         </Table>
+        </List>
         <Button variant="outlined" color="primary" style={{marginTop: 20}}>
         Edit
       </Button>
