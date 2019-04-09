@@ -12,6 +12,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TopBar from "./TopBar";
+import List  from "@material-ui/core/List";
 
 const styles = theme => ({
   root: {
@@ -53,7 +54,8 @@ function Employee(props) {
     <Paper
       style={{
         backgroundImage: "url(" + require("./technology.jpg") + ")",
-        height: "100vh"
+        height: "100vh",
+        overflow: 'auto'
       }}
     >
 
@@ -66,6 +68,7 @@ function Employee(props) {
         }}
       >
       <h2>Employees</h2>
+        <List> 
         <Table>
           <TableHead>
             <TableRow>
@@ -76,6 +79,7 @@ function Employee(props) {
             </TableRow>
           </TableHead>
           <TableBody>
+             
             {data.map(user => (
               <TableRow>
                 <TableCell>{user.name}</TableCell>
@@ -84,8 +88,10 @@ function Employee(props) {
                 <TableCell>{user.email}</TableCell>
               </TableRow>
             ))}
+            
           </TableBody>
         </Table>
+        </List>
       </Paper>
     </Paper>
     </div>
