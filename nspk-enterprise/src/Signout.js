@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import TopBar from "./TopBar";
 import Paper from "@material-ui/core/Paper";
 import { Button } from "@material-ui/core";
@@ -11,6 +10,8 @@ const styles = {
     backgroundImage: "url(" + bg + ")"
   }
 };
+
+
 
 class Signout extends Component {
   render() {
@@ -32,11 +33,13 @@ class Signout extends Component {
           }}
         >
 
-<h2>Sign out</h2>
-          Are you sure you want to log out?
+            <h2>Sign out</h2>
+            <h3>Are you sure you want to log out?</h3>
+          
           <Button
             variant="contained"
             color="secondary"
+            mr={10}
             onClick={()=> this.props.history.push('/signin')}
           >
             {" "}
@@ -45,6 +48,7 @@ class Signout extends Component {
           <Button variant="contained" color="primary">
             No
           </Button>
+          
         </Paper>
       </Paper>
       </div>
