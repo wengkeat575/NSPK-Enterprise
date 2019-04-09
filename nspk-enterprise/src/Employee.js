@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import { Typography } from "@material-ui/core";
+//import { Typography, Button } from "@material-ui/core";
 import "./index.css";
 import { borders } from "@material-ui/system";
 import Table from "@material-ui/core/Table";
@@ -12,7 +12,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TopBar from "./TopBar";
-import List  from "@material-ui/core/List";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   root: {
@@ -51,7 +51,7 @@ function Employee(props) {
   return (
     <div>
       <TopBar/>
-    
+
     <Paper
       style={{
         backgroundImage: "url(" + require("./technology.jpg") + ")",
@@ -70,11 +70,11 @@ function Employee(props) {
       >
       <h2>Employees</h2>
       <form>
-        <input 
+        <input
           placeholder = "Search Employee... "
         />
       </form>
-        <List> 
+        <List>
         <Table>
           <TableHead>
             <TableRow>
@@ -85,7 +85,7 @@ function Employee(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-             
+
             {data.map(user => (
               <TableRow>
                 <TableCell>{user.name}</TableCell>
@@ -94,10 +94,12 @@ function Employee(props) {
                 <TableCell>{user.email}</TableCell>
               </TableRow>
             ))}
-            
+
           </TableBody>
         </Table>
-        </List>
+        <Button variant="outlined" color="primary" style={{marginTop: 20}}>
+        Edit
+      </Button>
       </Paper>
     </Paper>
     </div>
