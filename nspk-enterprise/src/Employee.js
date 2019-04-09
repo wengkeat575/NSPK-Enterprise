@@ -51,6 +51,7 @@ function Employee(props) {
   return (
     <div>
       <TopBar/>
+    
     <Paper
       style={{
         backgroundImage: "url(" + require("./technology.jpg") + ")",
@@ -68,6 +69,11 @@ function Employee(props) {
         }}
       >
       <h2>Employees</h2>
+      <form>
+        <input 
+          placeholder = "Search Employee... "
+        />
+      </form>
         <List> 
         <Table>
           <TableHead>
