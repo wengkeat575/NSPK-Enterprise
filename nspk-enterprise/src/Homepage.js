@@ -7,6 +7,7 @@ import Profile from "./Profile";
 import About from "./About";
 import Employee from "./Employee";
 import Signout from "./Signout";
+import Salary from "./Salary";
 //import Homepage from './Homepage';
 
 const Header = styled("h2")`
@@ -23,11 +24,13 @@ class Homepage extends React.Component {
       <Router>
             <Header><h1>NSPK</h1>
           <Switch>
+          <Route path="/salary" component={Salary} />
             <Route path="/profile" component={Profile} />
             <Route path="/employees" component={Employee} />
             <Route path="/about" component={About} />
             <Route path="/signout" component={Signout} />
             <Route path="*" component={App} />
+            
           </Switch>
           </Header>
       </Router>

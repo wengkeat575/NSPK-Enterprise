@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import { Typography } from "@material-ui/core";
+//import { Typography, Button } from "@material-ui/core";
 import "./index.css";
 import { borders } from "@material-ui/system";
 import Table from "@material-ui/core/Table";
@@ -12,6 +12,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TopBar from "./TopBar";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   root: {
@@ -86,6 +87,9 @@ function Employee(props) {
             ))}
           </TableBody>
         </Table>
+        <Button variant="outlined" color="primary" style={{marginTop: 20}}>
+        Edit
+      </Button>
       </Paper>
     </Paper>
     </div>

@@ -24,12 +24,11 @@ class Signout extends Component {
         }}
       >
         <Paper
-          zDepth={2}
           style={{
             margin: "48px",
             padding: "32px",
             margin: "auto",
-            width: "300px"
+            width: "300px"            
           }}
         >
 
@@ -39,7 +38,7 @@ class Signout extends Component {
           <Button
             variant="contained"
             color="secondary"
-            mr={10}
+            style={{marginRight: 20}}
             onClick={()=> this.props.history.push('/signin')}
           >
             {" "}
