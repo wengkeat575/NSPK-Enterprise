@@ -9,6 +9,9 @@ const database  = require ('../database.js');
 // jwt.checkJwt,
 
 router.get("/:employeeid",  function(req, res) {
+  res.json({
+    m: "hello"
+  })
   database.connection.connect();
   let query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,
                 employees.last_name, employees.gender, employees.hire_date, title.title, salary.salary 
