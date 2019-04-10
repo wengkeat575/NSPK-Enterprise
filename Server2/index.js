@@ -12,7 +12,7 @@ var admin = require("./routes/admin");
 // Auth0 bobgel12@gmail.com
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
-export const checkJwt = jwt({
+const checkJwt = jwt({
 	secret: jwksRsa.expressJwtSecret({
 	  cache: true,
 	  rateLimit: true,
