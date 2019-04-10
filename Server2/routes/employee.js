@@ -9,6 +9,7 @@ const database  = require ('../database.js');
 // jwt.checkJwt,
 
 router.get("/:employeeid",  function(req, res) {
+  console.log("here")
   res.json({
     m: "hello"
   })
