@@ -57,7 +57,7 @@ class Profile extends React.Component {
             width: "480px"
           }}
         >
-        
+
           <React.Fragment>
             <Grid
               container
@@ -153,7 +153,7 @@ class Profile extends React.Component {
             </Grid>
           </React.Fragment>
         </Paper>
-      
+
       </Paper>
       </div>
     );

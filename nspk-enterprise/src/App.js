@@ -9,16 +9,8 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 //import FontSizeChanger from 'react-font-size-changer';
-import { withRouter } from "react-router-dom";
-import Homepage from "./Homepage.js";
 import { BrowserRouter as Router } from "react-router-dom";
-import { Link } from "react-router-dom";
-import About from "./About";
-import Employee from "./Employee";
-import Signout from "./Signout";
 
-import Profile from "./Profile";
-import { BrowserRouter as Switch, Route } from "react-router-dom";
 
 import Auth from './Auth/Auth.js';
 const auth = new Auth();

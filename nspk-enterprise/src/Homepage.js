@@ -7,12 +7,13 @@ import Profile from "./Profile";
 import About from "./About";
 import Employee from "./Employee";
 import Signout from "./Signout";
+import Salary from "./Salary";
 //import Homepage from './Homepage';
 
 const Header = styled("h2")`
   background: #cbdcf3;
   color: #394351;
-  font-size: 20px;
+  font-size: 15px;
   text-align: center;
   margin: 0px;
 `;
@@ -28,6 +29,7 @@ class Homepage extends React.Component {
             <Route path="/about" component={About} />
             <Route path="/signout" component={Signout} />
             <Route path="*" component={App} />
+            <Route path="/salary" component={Salary} />
           </Switch>
           </Header>
       </Router>

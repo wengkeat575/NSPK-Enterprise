@@ -1,6 +1,11 @@
-const https = require('https');
-const http = require('http');
-const fs = require('fs');
+var express = require('express');
+var https = require('https');
+var http = require('http');
+var fs = require('fs');
+// Create a service (the app object is just a callback).
+var app = express();
+var employee = require ('./routes/employee')
+var admin = require("./routes/admin");
 
 // Start Auth0 API protect
 const express = require('express');
@@ -74,29 +79,30 @@ app.use(function(err, req, res, next){
 });
 // End Auth0 Use checkJwt as a middleware 
 
-// Dung Code
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+// Steven Code
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// var path = require('path');
+// var cookieParser = require('cookie-parser');
+// var logger = require('morgan');
 
-// Might remove later since we use react for the Client
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jsx');
-app.engine('jsx', require('express-react-views').createEngine());
+// app.use(logger('dev'));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, 'public')));
+
+// // Might remove later since we use react for the Client
+// app.set('views', __dirname + '/views');
+// app.set('view engine', 'jsx');
+// app.engine('jsx', require('express-react-views').createEngine());
+
 
 // Routes
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use("/employees", employee);
+app.use("/admin", admin);
 
-// End Dung Code
+// End Steven Code
+
 
 // This line is from the Node.js HTTPS documentation.
 var options = {
