@@ -6,7 +6,7 @@ const database = require("../database.js");
 
 router.get("/getallemployees/:from", jwt.checkJwt, function(req, res) {
   database.connection.connect();
-  let query = `SELECT * FROM employees Limit ${req.params.employeeid}, 100; `;
+  var query = `SELECT * FROM employees Limit ${req.params.employeeid}, 100; `;
   database.connection.query(query, function(error, results, fields) {
     //if error, print blank results
     if (error) {
@@ -56,7 +56,7 @@ router.get("/getallemployees/:from", jwt.checkJwt, function(req, res) {
 
 router.get("/get1employees/:employeeid", checkJwt, function(req, res) {
   database.connection.connect();
-  let query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,
+  var query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,
                 employees.last_name, employees.gender, employees.hire_date, title.title, salary.salary 
                 FROM ((employees
                 INNER JOIN (
