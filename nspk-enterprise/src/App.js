@@ -20,6 +20,9 @@ import Signout from "./Signout";
 import Profile from "./Profile";
 import { BrowserRouter as Switch, Route } from "react-router-dom";
 
+import Auth from './Auth/Auth.js';
+const auth = new Auth();
+
 const Header = styled("h1")`
   background: #cbdcf3;
   color: #394351;
@@ -46,6 +49,10 @@ class App extends React.Component {
     //let path = '/homepage';
     // this.props.history.push('/profile');
     console.log("hello");
+  }
+
+  login = () =>{
+	auth.login();
   }
 
   render() {
@@ -88,7 +95,8 @@ class App extends React.Component {
                   variant="contained"
                   size="large"
                   color="primary"
-                  onClick={()=> this.props.history.push('/profile')}
+                  onClick={this.login}
+                //   onClick={()=> this.props.history.push('/profile')}
                 >
                   Sign In
                 </Button>

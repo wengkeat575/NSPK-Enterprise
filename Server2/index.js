@@ -23,6 +23,9 @@ const corsOptions =  {
 
 app.use(cors(corsOptions));
 
+
+
+// Auth0 functions 
 const checkJwt = jwt({
   // Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
   secret: jwksRsa.expressJwtSecret({
@@ -39,6 +42,12 @@ const checkJwt = jwt({
 });
 
 const checkScopes = jwtAuthz(['read:messages']);
+
+
+
+
+
+
 
 // Sample public 
 app.get('/api/public', function(req, res) {
@@ -63,8 +72,6 @@ app.use(function(err, req, res, next){
   console.error(err.stack);
   return res.status(err.status).json({ message: err.message });
 });
-
-
 // End Auth0 Use checkJwt as a middleware 
 
 // Dung Code
