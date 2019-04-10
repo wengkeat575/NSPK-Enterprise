@@ -4,7 +4,7 @@ var jwt = require("../index.js");
 const database = require("../database.js");
 
 
-router.get("/getallemployees/:from", checkJwt, function(req, res) {
+router.get("/getallemployees/:from", jwt.checkJwt, function(req, res) {
   database.connection.connect();
   let query = `SELECT * FROM employees Limit ${req.params.employeeid}, 100; `;
   database.connection.query(query, function(error, results, fields) {
@@ -50,6 +50,8 @@ router.get("/getallemployees/:from", checkJwt, function(req, res) {
 
    database.connection.end();
 });
+
+// Api search by substring  
 
 
 router.get("/get1employees/:employeeid", checkJwt, function(req, res) {
