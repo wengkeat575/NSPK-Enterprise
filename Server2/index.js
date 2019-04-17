@@ -12,7 +12,7 @@ var admin = require("./routes/admin");
 // Auth0 bobgel12@gmail.com
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
-export const checkJwt = jwt({
+const checkJwt = jwt({
 	secret: jwksRsa.expressJwtSecret({
 	  cache: true,
 	  rateLimit: true,
@@ -45,7 +45,7 @@ export const checkJwt = jwt({
 // app.set('view engine', 'jsx');
 // app.engine('jsx', require('express-react-views').createEngine());
 
-
+app.use(express.json())  
 // Routes
 app.use("/employees", employee);
 app.use("/admin", admin);
@@ -54,12 +54,15 @@ app.use("/admin", admin);
 
 
 // This line is from the Node.js HTTPS documentation.
-var options = {
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-};
+// var options = {
+//   key: fs.readFileSync('server.key'),
+//   cert: fs.readFileSync('server.cert')
+// };
 
 // Create an HTTP service.
 //http.createServer(app).listen(3000);
 // Create an HTTPS service identical to the HTTP service.
-https.createServer(options, app).listen(3000);
+
+app.listen(8080);
+//https.createServer(options,app).listen(8080);
+
