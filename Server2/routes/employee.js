@@ -1,17 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var jwt = require("../index.js");
-const database  = require ('../database.js');
+const connection  = require ('../database.js');
 
 // jwt.checkJwt,
 
 router.get("/:employeeid",  function(req, res) {
-  console.log("here")
-  res.json({
-    m: "hello"
-  })
-  database.connection.connect();
-  var query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,
+  console.log("connect ");
+
+  const query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,
                 employees.last_name, employees.gender, employees.hire_date, title.title, salary.salary 
                 FROM ((employees
                 INNER JOIN (
@@ -29,48 +25,18 @@ router.get("/:employeeid",  function(req, res) {
                   Limit 1
                 )salary ON employees.emp_no = salary.emp_no);`;
 
-  database.connection.query(query, function(error, results, fields) {
+  connection.query(query, function(error, results, fields) {
     //if error, print blank results
     if (error) {
-      // console.log(error);
-      var apiResult = {};
 
-      apiResult.meta = {
-        table: section,
-        type: "collection",
-        total: 0
-      };
-      //create an empty data table
-      apiResult.data = [];
+      res.send(JSON.stringify({ "status": 400, "error": true }));
+    } else{
 
-      //send the results (apiResult) as JSON to Express (res)
-      //Express uses res.json() to send JSON to client
-      //you will see res.send() used for HTML
-      res.json(apiResult);
+    res.send(JSON.stringify({ "status": 200, "error": null, "response": results }));
     }
-
-    //make results
-    var resultJson = JSON.stringify(results);
-    resultJson = JSON.parse(resultJson);
-    var apiResult = {};
-
-    // create a meta table to help apps
-    //do we have results? what section? etc
-    apiResult.meta = {
-      table: section,
-      type: "collection",
-      total: 1,
-      total_entries: 0
-    };
-
-    //add our JSON results to the data table
-    apiResult.data = resultJson;
-
-    //send JSON to Express
-    res.json(apiResult);
   });
 
-  database.connection.end();
+
 
 });
 
