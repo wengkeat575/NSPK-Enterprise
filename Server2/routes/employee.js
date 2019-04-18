@@ -3,9 +3,6 @@ var router = express.Router();
 var jwt = require("../index.js");
 const database  = require ('../database.js');
 
-
-
-
 // jwt.checkJwt,
 
 router.get("/:employeeid",  function(req, res) {
