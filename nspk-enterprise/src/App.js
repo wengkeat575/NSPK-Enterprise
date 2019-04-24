@@ -12,8 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import { BrowserRouter as Router } from "react-router-dom";
 
 
-import Auth from './Auth/Auth.js';
-const auth = new Auth();
+import auth0Client from './Auth/Auth';
 
 const Header = styled("h1")`
   background: #cbdcf3;
@@ -44,7 +43,8 @@ class App extends React.Component {
   }
 
   login = () =>{
-	auth.login();
+	auth0Client.signIn();
+	this.props.history.push('/profile')
   }
 
   render() {

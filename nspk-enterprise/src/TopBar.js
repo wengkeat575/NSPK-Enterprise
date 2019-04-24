@@ -7,10 +7,23 @@ import Profile from "./Profile";
 import About from "./About";
 import Employee from "./Employee";
 import Signout from "./Signout";
+import auth0Client from './Auth/Auth';
+
 //import Homepage from './Homepage';
 
 
 class TopBar extends React.Component {
+	constructor(props) {
+		super(props);
+		this.signOut = this.signOut.bind(this);
+	  }
+	
+	signOut = () => {
+		auth0Client.signOut();
+		this.props.history.replace('/');
+	};
+
+
   render() {
     return (
 <div>
@@ -34,9 +47,20 @@ class TopBar extends React.Component {
                 </Link>
               </li>
               <li style={{ float: "left", padding: "16px" }}>
-                <Link to={"/signout"} className="nav-link">
+				{
+					!auth0Client.isAuthenticated() &&
+					<button className="btn btn-dark" onClick={auth0Client.signIn}>Sign In</button>
+				}
+				{
+					auth0Client.isAuthenticated() &&
+					<div>
+						<label className="mr-2 text-white">{auth0Client.getProfile().name}</label>
+						<button className="btn btn-dark" onClick={() => {this.signOut()}}>Sign Out</button>
+					</div>
+				}
+                {/* <Link to={"/signout"} className="nav-link">
                   Sign Out
-                </Link>
+                </Link> */}
               </li>
             </ul>
           </nav>

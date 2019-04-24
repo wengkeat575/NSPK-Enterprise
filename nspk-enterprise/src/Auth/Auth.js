@@ -1,99 +1,67 @@
 import auth0 from 'auth0-js';
+import credential from '../credential'
+const dotenv = require('dotenv');
+// const webpack = require('webpack');
 
-export default class Auth {
-	accessToken;
-	idToken;
-	expiresAt;
-  	auth0 = new auth0.WebAuth({
-    domain: 'bobgel.auth0.com',
-    clientID: '0aD77UKOa3bRhEUE6ve1zzvQzgL54pnD',
-    redirectUri: 'http://localhost:3000/callback',
-    responseType: 'token id_token',
-    scope: 'openid'
-  });
+// console.log('process.env')
+// console.log(dotenv.config().parsed)
+// jwksUri: `https://${process.env.YOUR_AUTH0_DOMAIN}/.well-known/jwks.json`
+// }),
 
+// // Validate the audience and the issuer.
+// audience: `${process.env.YOUR_AUTH0_CLIENT_ID}`,
+// issuer: `https://${process.env.YOUR_AUTH0_DOMAIN}/`,
+
+class Auth {
   constructor() {
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-    this.handleAuthentication = this.handleAuthentication.bind(this);
-    this.isAuthenticated = this.isAuthenticated.bind(this);
-    this.getAccessToken = this.getAccessToken.bind(this);
-    this.getIdToken = this.getIdToken.bind(this);
-    this.renewSession = this.renewSession.bind(this);
+	this.auth0 = new auth0.WebAuth(credential);
+	console.log(this.auth0)
+	this.getProfile = this.getProfile.bind(this);
+	this.handleAuthentication = this.handleAuthentication.bind(this);
+	this.isAuthenticated = this.isAuthenticated.bind(this);
+	this.signIn = this.signIn.bind(this);
+	this.signOut = this.signOut.bind(this);
   }
-
-  login() {
-    this.auth0.authorize();
-  }
-
-  handleAuthentication() {
-    this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult);
-      } else if (err) {
-		// history.replace('/home');
-		this.props.history.push('/')
-        console.log(err);
-        alert(`Error: ${err.error}. Check the console for further details.`);
-      }
-    });
-  }
-
-  getAccessToken() {
-    return this.accessToken;
+  getProfile() {
+    return this.profile;
   }
 
   getIdToken() {
     return this.idToken;
   }
 
-  setSession(authResult) {
-    // Set isLoggedIn flag in localStorage
-    localStorage.setItem('isLoggedIn', 'true');
-
-    // Set the time that the access token will expire at
-    let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
-    this.accessToken = authResult.accessToken;
-    this.idToken = authResult.idToken;
-    this.expiresAt = expiresAt;
-
-    // navigate to the home route
-    this.props.history.push('/')
-  }
-
-  renewSession() {
-    this.auth0.checkSession({}, (err, authResult) => {
-       if (authResult && authResult.accessToken && authResult.idToken) {
-         this.setSession(authResult);
-       } else if (err) {
-         this.logout();
-         console.log(err);
-         alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
-       }
-    });
-  }
-
-  logout() {
-    // Remove tokens and expiry time
-    this.accessToken = null;
-    this.idToken = null;
-    this.expiresAt = 0;
-
-    // Remove isLoggedIn flag from localStorage
-    localStorage.removeItem('isLoggedIn');
-
-    this.auth0.logout({
-      return_to: window.location.origin
-    });
-
-    // navigate to the home route
-    this.props.history.push('/')
-  }
-
   isAuthenticated() {
-    // Check whether the current time is past the
-    // access token's expiry time
-    let expiresAt = this.expiresAt;
-    return new Date().getTime() < expiresAt;
+    return new Date().getTime() < this.expiresAt;
+  }
+
+  signIn() {
+    this.auth0.authorize();
+  }
+
+  handleAuthentication() {
+    return new Promise((resolve, reject) => {
+      this.auth0.parseHash((err, authResult) => {
+        if (err) return reject(err);
+        if (!authResult || !authResult.idToken) {
+          return reject(err);
+        }
+        this.idToken = authResult.idToken;
+        this.profile = authResult.idTokenPayload;
+        // set the time that the id token will expire at
+        this.expiresAt = authResult.idTokenPayload.exp * 1000;
+        resolve();
+      });
+    })
+  }
+
+  signOut() {
+    // clear id token, profile, and expiration
+    this.idToken = null;
+    this.profile = null;
+    this.expiresAt = null;
   }
 }
+
+const auth0Client = new Auth();
+
+export default auth0Client;
