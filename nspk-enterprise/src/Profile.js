@@ -42,7 +42,7 @@ class Profile extends React.Component {
     console.log(this.state.editMode);
     return (
       <div>
-        <TopBar/>
+        {/* <TopBar/> */}
       <Paper
         style={{
           backgroundImage: "url(" + require("./technology.jpg") + ")",

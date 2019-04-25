@@ -16,7 +16,8 @@ const styles = {
 class About extends Component {
   render() {
     return (
-      <div><TopBar/>
+      <div>
+		  {/* <TopBar/> */}
       <Paper style={styles.paperContainer}>
         <Paper
           style={{

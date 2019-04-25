@@ -4,11 +4,8 @@ var fs = require('fs');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const jwt = require('express-jwt');
-const jwksRsa = require('jwks-rsa');
 
-// Auth
-// const {checkJwt, checkScopes} = require('./auth');
+// const {checkJwt,checkScopes} = require('./middleware/isLoggedIn')
 
 // Start Auth0 API protect
 const express = require('express');
@@ -34,46 +31,29 @@ if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
 	throw 'Make sure you have AUTH0_DOMAIN, and AUTH0_AUDIENCE in your .env file';
 }
 
-
-const checkJwt = jwt({
-	secret: jwksRsa.expressJwtSecret({
-	  cache: true,
-	  rateLimit: true,
-	  jwksRequestsPerMinute: 5,
-	  jwksUri: `https://${process.env.YOUR_AUTH0_DOMAIN}/.well-known/jwks.json`
-	}),
-  
-	// Validate the audience and the issuer.
-	audience: `${process.env.YOUR_AUTH0_CLIENT_ID}`,
-	issuer: `https://${process.env.YOUR_AUTH0_DOMAIN}/`,
-	algorithms: ['RS256']
-  });
-
-
-
 // Create a service (the app object is just a callback).
 var employee = require ('./routes/employee')
 var admin = require("./routes/admin");
 
 
-// Sample public 
-app.get('/api/public', function(req, res) {
-  res.json({
-    message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
-  });
-});
+// // Sample public 
+// app.get('/api/public', function(req, res) {
+//   res.json({
+//     message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
+//   });
+// });
 
-app.get('/api/private', checkJwt, function(req, res) {
-  res.json({
-    message: 'Hello from a private endpoint! You need to be authenticated to see this.'
-  });
-});
+// app.get('/api/private', checkJwt, function(req, res) {
+//   res.json({
+//     message: 'Hello from a private endpoint! You need to be authenticated to see this.'
+//   });
+// });
 
-app.get('/api/private-scoped', checkJwt, function(req, res) {
-  res.json({
-    message: 'Hello from a private endpoint! You need to be authenticated and have a scope of read:messages to see this.'
-  });
-});
+// app.get('/api/private-scoped', checkJwt, function(req, res) {
+//   res.json({
+//     message: 'Hello from a private endpoint! You need to be authenticated and have a scope of read:messages to see this.'
+//   });
+// });
 
 app.use(function(err, req, res, next){
   console.error(err.stack);

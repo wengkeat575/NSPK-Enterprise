@@ -76,7 +76,7 @@ class Employee extends React.Component {
   render(){
 	  return (
 		<div>
-		  <TopBar/>
+		  {/* <TopBar/> */}
 		<Paper
 		  style={{
 			backgroundImage: "url(" + require("./technology.jpg") + ")",

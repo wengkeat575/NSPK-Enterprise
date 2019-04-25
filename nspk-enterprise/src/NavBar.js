@@ -32,6 +32,8 @@ function ButtonAppBar(props) {
 		auth0Client.signOut();
 		props.history.replace('/');
 	};
+	console.log('auth0Client.getProfile()')
+	console.log(auth0Client.getProfile())
 
 	return (
 	  <div style={styles.root}>
@@ -43,15 +45,21 @@ function ButtonAppBar(props) {
 				</Link>
 			</IconButton>
 			<Typography variant="h6" color="inherit" style={styles.grow}>
-				<Link style = {{textDecoration: 'none', color: 'white'}}to={"/profile"} className="nav-link">
-					<Button color="inherit">Profile</Button>
-				</Link>
-				<Link style = {{textDecoration: 'none', color: 'white'}}to={"/employee"} className="nav-link">
-					<Button color="inherit">Employee</Button>
-				</Link>
-				<Link style = {{textDecoration: 'none', color: 'white'}}to={"/about"} className="nav-link">
-					<Button color="inherit">About</Button>
-				</Link>
+				{
+					auth0Client.isAuthenticated() &&
+					// <button className="btn btn-dark" onClick={auth0Client.signIn}>Sign In</button>
+					<div>
+						<Link style = {{textDecoration: 'none', color: 'white'}}to={"/profile"} className="nav-link">
+							<Button color="inherit">Profile</Button>
+						</Link>
+						<Link style = {{textDecoration: 'none', color: 'white'}}to={"/employees"} className="nav-link">
+							<Button color="inherit">Employee</Button>
+						</Link>
+						<Link style = {{textDecoration: 'none', color: 'white'}}to={"/about"} className="nav-link">
+							<Button color="inherit">About</Button>
+						</Link>
+					</div>
+				}
 			</Typography>
 			{
 				!auth0Client.isAuthenticated() &&

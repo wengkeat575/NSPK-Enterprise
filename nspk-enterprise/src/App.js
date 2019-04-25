@@ -57,7 +57,7 @@ class App extends React.Component {
           height: "100vh"
         }}
       >
-          <Grid container justify="center">
+          {/* <Grid container justify="center">
             <Paper style={style}>
               <Typography style={{ fontSize: "35px", color: "primary"}}>
                 Employee Login
@@ -82,19 +82,16 @@ class App extends React.Component {
                 style={{ Width: 450 }}
               />
               <div />
-              <Router>
                 <Button
                   variant="contained"
                   size="large"
                   color="primary"
                   onClick={this.login}
-                //   onClick={()=> this.props.history.push('/profile')}
                 >
                   Sign In
                 </Button>
-              </Router>
             </Paper>
-          </Grid>
+          </Grid> */}
         </Paper>
     );
   }

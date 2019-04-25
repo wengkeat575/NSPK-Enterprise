@@ -26,7 +26,7 @@ class Homepage extends React.Component {
     return (
       <Router>
 			<NavBar/>
-            <Header><h1>NSPK</h1>
+            {/* <Header><h1>NSPK</h1> */}
           <Switch>
             <Route path="/callback" component={Callback} />
             {/* <Route path="/profile" component={Profile} /> */}
@@ -38,7 +38,7 @@ class Homepage extends React.Component {
             <Route path="*" component={App} />
             <Route path="/salary" component={Salary} />
           </Switch>
-          </Header>
+          {/* </Header> */}
       </Router>
     );
   }

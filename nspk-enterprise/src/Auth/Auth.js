@@ -41,6 +41,8 @@ class Auth {
   handleAuthentication() {
     return new Promise((resolve, reject) => {
       this.auth0.parseHash((err, authResult) => {
+		console.log('authResult')
+		console.log(authResult)
         if (err) return reject(err);
         if (!authResult || !authResult.idToken) {
           return reject(err);

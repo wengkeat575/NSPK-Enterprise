@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const connection = require("../database.js");
-
+const {checkJwt,checkScopes} = require('../middleware/isLoggedIn')
 
 router.get("/getallemployees/:from",  function(req, res) {
 
@@ -19,7 +19,7 @@ router.get("/getallemployees/:from",  function(req, res) {
 });
 
 
-router.get("/get1employees/:employeeid",  function(req, res) {
+router.get("/get1employees/:employeeid", checkJwt(), function(req, res) {
 
   const query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,
                 employees.last_name, employees.gender, employees.hire_date, title.title, salary.salary 
@@ -53,7 +53,7 @@ router.get("/get1employees/:employeeid",  function(req, res) {
 });
 
 
-router.get("/search/:name", function (req, res) {
+router.get("/search/:name", checkJwt(),function (req, res) {
 
   const query = `SELECT * FROM employees WHERE CONCAT(first_name, ' ', last_name) LIKE '%${req.params.name}%' limit 50;`
 
@@ -75,7 +75,7 @@ function format(date) {
   return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
 }
 
-router.post("/updateinfo", function (req, res) {
+router.post("/updateinfo", checkJwt(), function (req, res) {
   var today = new Date();
   today = format(today);
 

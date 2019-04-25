@@ -3,5 +3,5 @@ export default {
 	clientID: '0aD77UKOa3bRhEUE6ve1zzvQzgL54pnD',
 	redirectUri: 'http://localhost:3000/callback',
 	responseType: 'token id_token',
-	scope: 'openid'
+	scope: 'openid profile'
   }
