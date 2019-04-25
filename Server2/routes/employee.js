@@ -2,9 +2,6 @@ var express = require('express');
 var router = express.Router();
 const connection  = require ('../database.js');
 
-
-
-
 // jwt.checkJwt,
 
 router.get("/:employeeid",  function(req, res) {
