@@ -10,8 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 //import FontSizeChanger from 'react-font-size-changer';
 import { BrowserRouter as Router } from "react-router-dom";
-
-
+import { SketchPicker } from 'react-color';
 import auth0Client from './Auth/Auth';
 
 const Header = styled("h1")`
@@ -91,7 +90,12 @@ class App extends React.Component {
                   Sign In
                 </Button>
             </Paper>
-          </Grid> */}
+          </Grid> */
+          <div>
+          <h1  style={{color:"#BFC8D0", textAlign:"center", fontSize:"60px"}}>Welcome to NSPK internal website</h1>
+          <h2 style={{color:"#BFC8D0", textAlign:"center", fontSize:"45px"}}>Employees must log in</h2>
+          </div>
+          }
         </Paper>
     );
   }

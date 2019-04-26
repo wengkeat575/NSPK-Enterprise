@@ -47,6 +47,11 @@ class TopBar extends React.Component {
                 </Link>
               </li>
               <li style={{ float: "left", padding: "16px" }}>
+              <Link to={"/salary"} className="nav-link">
+                  About
+                </Link>
+              </li>
+              <li style={{ float: "left", padding: "16px" }}>
 				{
 					!auth0Client.isAuthenticated() &&
 					<button className="btn btn-dark" onClick={auth0Client.signIn}>Sign In</button>
