@@ -4,7 +4,9 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TopBar from "./TopBar";
-
+import ConnectForm from "./ConnectForm";
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
 const style = {
   marginLeft: 20
 };
@@ -42,7 +44,12 @@ class Profile extends React.Component {
     console.log(this.state.editMode);
     return (
       <div>
-        {/* <TopBar/> */}
+		<Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
+	        <DialogTitle id="simple-dialog-title">Connect to your account</DialogTitle>
+	        <div>
+				<ConnectForm/>
+	        </div>
+	      </Dialog>
       <Paper
         style={{
           backgroundImage: "url(" + require("./technology.jpg") + ")",

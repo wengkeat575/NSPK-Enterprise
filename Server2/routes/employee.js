@@ -1,10 +1,29 @@
 var express = require('express');
 var router = express.Router();
+var middleware = require("../middleware");
 const connection  = require ('../database.js');
 
-// jwt.checkJwt,
+const jwt = require('express-jwt');
+const jwtAuthz = require('express-jwt-authz');
+const jwksRsa = require('jwks-rsa');
 
-router.get("/:employeeid",  function(req, res) {
+// Auth0 functions 
+const checkJwt = jwt({
+	// Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
+	secret: jwksRsa.expressJwtSecret({
+	  cache: true,
+	  rateLimit: true,
+	  jwksRequestsPerMinute: 5,
+	  jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
+	}),
+  
+	// Validate the audience and the issuer.
+	audience: process.env.AUTH0_AUDIENCE,
+	issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+	algorithms: ['RS256']
+  });
+  
+router.get("/:employeeid", checkJwt, middleware.isThisYourAccount, function(req, res) {
   console.log("connect ");
 
   const query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,

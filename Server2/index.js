@@ -11,8 +11,10 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors');
 
-// Create a service (the app object is just a callback).
 const app = express();
+
+
+// Create a service (the app object is just a callback).
 
 // enhance your app security with Helmet
 app.use(helmet());
@@ -56,8 +58,16 @@ var admin = require("./routes/admin");
 // });
 
 app.use(function(err, req, res, next){
-  console.error(err.stack);
-  return res.status(err.status).json({ message: err.message });
+	next();
+	console.error(err.stack);
+	return res.status(err.status).json({ message: err.message });
+});
+
+app.use(function(req, res, next){
+	// res.locals.currentUser = req.user;
+	// res.locals.error = req.flash("error");
+	// res.locals.success = req.flash("success");	
+	next();
 });
 
 app.use(express.json())  
