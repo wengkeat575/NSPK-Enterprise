@@ -44,7 +44,7 @@ class Profile extends React.Component {
     console.log(this.state.editMode);
     return (
       <div>
-		<Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
+		<Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" >
 	        <DialogTitle id="simple-dialog-title">Connect to your account</DialogTitle>
 	        <div>
 				<ConnectForm/>
