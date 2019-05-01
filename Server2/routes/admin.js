@@ -1,9 +1,40 @@
 var express = require('express');
 var router = express.Router();
+var middleware = require("../middleware");
 const connection = require("../database.js");
-const {checkJwt,checkScopes} = require('../middleware/isLoggedIn')
+// const {checkJwt , checkScopes} = require('../middleware/isLoggedIn')
 
-router.get("/getallemployees/:from",  function(req, res) {
+
+const jwt = require('express-jwt');
+const jwtAuthz = require('express-jwt-authz');
+const jwksRsa = require('jwks-rsa');
+
+// Auth0 functions 
+const checkJwt = jwt({
+	// Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
+	secret: jwksRsa.expressJwtSecret({
+	  cache: true,
+	  rateLimit: true,
+	  jwksRequestsPerMinute: 5,
+	  jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
+	}),
+  
+	// Validate the audience and the issuer.
+	audience: process.env.AUTH0_AUDIENCE,
+	issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+	algorithms: ['RS256']
+  });
+  
+  // Check scropes
+// const checkScopes = jwtAuthz(['read:messages']);
+  // console.log(req.user)
+  // if (req.user) { return next(); }
+  // req.session.returnTo = req.originalUrl;
+  // res.redirect('/login');
+  
+  
+
+router.get("/getallemployees/:from", middleware.isAdmin, function(req, res) {
 
   const query = `SELECT * FROM employees Limit ${req.params.from}, 100; `;
   connection.query(query, function(error, results, fields) {
@@ -19,8 +50,9 @@ router.get("/getallemployees/:from",  function(req, res) {
 });
 
 
-// router.get("/get1employees/:employeeid", checkJwt(), function(req, res) {
-router.get("/get1employees/:employeeid", function(req, res) {
+
+router.get("/get1employees/:employeeid", checkJwt, middleware.isAdmin, function(req, res) {
+// router.get("/get1employees/:employeeid", function(req, res) {
 
   const query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,
                 employees.last_name, employees.gender, employees.hire_date, title.title, salary.salary 
@@ -54,8 +86,8 @@ router.get("/get1employees/:employeeid", function(req, res) {
 });
 
 
-// router.get("/search/:name", checkJwt(),function (req, res) {
-router.get("/search/:name", function (req, res) {
+router.get("/search/:name", checkJwt,function (req, res) {
+// router.get("/search/:name", function (req, res) {
 
   const query = `SELECT * FROM employees WHERE CONCAT(first_name, ' ', last_name) LIKE '%${req.params.name}%' limit 50;`
 
@@ -77,8 +109,8 @@ function format(date) {
   return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
 }
 
-// router.post("/updateinfo", checkJwt(), function (req, res) {
-router.post("/updateinfo", function (req, res) {
+router.post("/updateinfo", checkJwt, middleware.isAdmin, function (req, res) {
+// router.post("/updateinfo", function (req, res) {
   var today = new Date();
   today = format(today);
 
