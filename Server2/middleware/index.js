@@ -1,36 +1,36 @@
 // Middleware
-
+const connection = require('../database.js');
 var middleware = [];
 
 middleware.isThisYourAccount = function (req, res, next){
-	// if (req.isAuthenticated()) {
-	// 	Post.findById(req.params.id, function(err, foundPost){
-	// 		if (foundPost.author.id.equals(req.user._id)) {
-				next();
-	// 		} else{
-	// 			req.flash("error","You don't have permission to do that");
-	// 			res.redirect("back");
-	// 		}
-	// 	})
-	// } else{
-	// 	req.flash("error", "You don't have permission to do that!");
-	// 	res.redirect("back");
-	// }
+	const query = `SELECT emp_no, email FROM connects WHERE emp_no = ${req.params.employeeid}`
+	connection.query(query, function (error, results, fields) {
+		if (error) {
+			res.redirect("back");
+		} else {
+			if (results.length > 0){
+				if (results[0].email.toUpperCase() == req.params.email.toUpperCase()){
+					next();
+				}
+			}
+			res.redirect("back");
+		}
+	})
 }
 middleware.isAdmin = function(req, res, next){
-	// if (req.isAuthenticated()) {
-	// 	Comment.findById(req.params.commentId, function(err, foundComment){
-	// 		if (foundComment.author.id.equals(req.user._id)) {
-				next();
-	// 		} else{
-	// 			req.flash("error", "You don't have permission to do that!");
-	// 			res.redirect("back");
-	// 		}
-	// 	})
-	// } else{
-	// 	req.flash("error", "You don't have permission to do that!");
-	// 	res.redirect("back");	
-	// }
+	const query = `SELECT emp_no, title FROM titles WHERE emp_no = ${req.params.employeeid}`
+	connection.query(query, function (error, results, fields) {
+		if (error) {
+			res.redirect("back");
+		} else {
+			if (results.length > 0){
+				if (results[0].title.toUpperCase() == "MANAGER"){
+					next();
+				}
+			}
+			res.redirect("back");
+		}
+	})
 }
 
 module.exports = middleware;

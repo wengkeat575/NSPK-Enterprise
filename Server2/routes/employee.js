@@ -23,7 +23,8 @@ const checkJwt = jwt({
 	algorithms: ['RS256']
   });
   
-router.get("/:employeeid", checkJwt, middleware.isThisYourAccount, function(req, res) {
+// router.get("/:employeeid", checkJwt, middleware.isThisYourAccount, function(req, res) {
+router.get("/:employeeid", middleware.isThisYourAccount, function(req, res) {
   console.log("connect ");
 
   const query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,
