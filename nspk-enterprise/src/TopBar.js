@@ -8,6 +8,7 @@ import About from "./About";
 import Employee from "./Employee";
 import Signout from "./Signout";
 import auth0Client from './Auth/Auth';
+import Salary from './Salary';
 
 //import Homepage from './Homepage';
 
@@ -48,10 +49,11 @@ class TopBar extends React.Component {
               </li>
               <li style={{ float: "left", padding: "16px" }}>
               <Link to={"/salary"} className="nav-link">
-                  About
+                  Salary
                 </Link>
               </li>
               <li style={{ float: "left", padding: "16px" }}>
+              
 				{
 					!auth0Client.isAuthenticated() &&
 					<button className="btn btn-dark" onClick={auth0Client.signIn}>Sign In</button>
