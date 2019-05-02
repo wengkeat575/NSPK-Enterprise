@@ -35,8 +35,9 @@ class Homepage extends React.Component {
             <SecuredRoute path='/employees' component={Employee} />
             <Route path="/about" component={About} />
             <Route path="/signout" component={Signout} />
+            <SecuredRoute path='/salary' component={Salary} />
             <Route path="*" component={App} />
-            <Route path="/salary" component={Salary} />
+            
           </Switch>
           {/* </Header> */}
       </Router>

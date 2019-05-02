@@ -1,36 +1,53 @@
 import React, { Component } from "react";
-import TopBar from "./TopBar";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-
-
+import List from "@material-ui/core/List";
+import TopBar from "./TopBar";
 var bg = require("./technology.jpg");
 
 const styles = {
   paperContainer: {
-    backgroundImage: "url(" + bg + ")"
-  }
+    
+    height: "100vh"
+  },
+  height: "100%"
 };
 
-class Salary extends React.Component {
+class Salary extends Component {
   render() {
     return (
-        <div><TopBar/>
-      <Paper
-        style={{
-          backgroundImage: "url(" + require("./technology.jpg") + ")",
-          height: "100vh"
-        }}
-      >
+      <div>
+		  {/* <TopBar/> */}
+      <Paper style={styles.paperContainer}>
         <Paper
-          zDepth={2}
           style={{
             margin: "48px",
             padding: "32px",
             margin: "auto",
-            width: "300px"
+            width: "480px"
           }}
         >
-            hello
+
+          <h2>Salary</h2>
+          <List>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell> First Name </TableCell>
+                    <TableCell> Last Name </TableCell>
+                    <TableCell> Date </TableCell>
+                    <TableCell> Salary </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                 
+                </TableBody>
+              </Table>
+            </List>
         </Paper>
       </Paper>
       </div>

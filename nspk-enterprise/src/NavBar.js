@@ -55,9 +55,14 @@ function ButtonAppBar(props) {
 						<Link style = {{textDecoration: 'none', color: 'white'}}to={"/employees"} className="nav-link">
 							<Button color="inherit">Employee</Button>
 						</Link>
+						<Link style = {{textDecoration: 'none', color: 'white'}}to={"/salary"} className="nav-link">
+							<Button color="inherit">Salary</Button>
+						</Link>
 						<Link style = {{textDecoration: 'none', color: 'white'}}to={"/about"} className="nav-link">
 							<Button color="inherit">About</Button>
 						</Link>
+						
+
 					</div>
 				}
 			</Typography>
