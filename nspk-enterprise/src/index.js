@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import Homepage from "./Homepage";
+import Salary from "./Salary";
 
 ReactDOM.render(<Homepage />, document.getElementById("root"));
 
