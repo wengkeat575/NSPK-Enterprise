@@ -57,8 +57,32 @@ router.get("/:employeeid", middleware.isThisYourAccount, function(req, res) {
   });
 
 
+});
+
+router.post("/insert", function (req, res) {
+
+  const query = `INSERT INTO email (email)
+            VALUES ('${req.body.info.email}')
+            WHERE emp_no = ${req.body.info.emp_no} AND secKey = ${req.body.info.secKey} `
+
+  connection.query(query, function (error, results) {
+    //if error, print blank results
+    if (error) {
+
+      res.send(JSON.stringify({ "status": 400, "error": true }));
+    } else {
+
+      res.send(JSON.stringify({ "status": 200, "error": null, "response": results.affectedRows }));
+    }
+  });
 
 });
+
+
+
+
+
+
 
 module.exports = router;
 
