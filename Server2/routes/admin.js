@@ -9,7 +9,7 @@ const jwt = require('express-jwt');
 const jwtAuthz = require('express-jwt-authz');
 const jwksRsa = require('jwks-rsa');
 
-// Auth0 functions 
+// Auth0 functions
 const checkJwt = jwt({
 	// Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
 	secret: jwksRsa.expressJwtSecret({
@@ -18,21 +18,21 @@ const checkJwt = jwt({
 	  jwksRequestsPerMinute: 5,
 	  jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
 	}),
-  
+
 	// Validate the audience and the issuer.
 	audience: process.env.AUTH0_AUDIENCE,
 	issuer: `https://${process.env.AUTH0_DOMAIN}/`,
 	algorithms: ['RS256']
   });
-  
+
   // Check scropes
 // const checkScopes = jwtAuthz(['read:messages']);
   // console.log(req.user)
   // if (req.user) { return next(); }
   // req.session.returnTo = req.originalUrl;
   // res.redirect('/login');
-  
-  
+
+
 
 router.get("/getallemployees/:from", middleware.isAdmin, function(req, res) {
 
@@ -40,7 +40,7 @@ router.get("/getallemployees/:from", middleware.isAdmin, function(req, res) {
   connection.query(query, function(error, results, fields) {
     //if error, print blank results
     if (error) {
- 
+
       res.send(JSON.stringify({ "status": 400, "error": true }));
     }else{
 
@@ -54,7 +54,7 @@ router.get("/get1employees/:employeeid", function(req, res) {
 // router.get("/get1employees/:employeeid", function(req, res) {
 
   const query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,
-                employees.last_name, employees.gender, employees.hire_date, title.title, salary.salary 
+                employees.last_name, employees.gender, employees.hire_date, title.title, salary.salary
                 FROM ((employees
                 INNER JOIN (
                   SELECT emp_no, title
@@ -117,7 +117,7 @@ router.post("/updateinfo", checkJwt, middleware.isAdmin, function (req, res) {
     query01 = `UPDATE salaries
             SET to_date='${today}'
             WHERE emp_no = '${req.body.info.emp_no}' and to_date= '9999-01-01';`
-    query02 = `INSERT INTO salaries 
+    query02 = `INSERT INTO salaries
             VALUES ('${req.body.info.emp_no}','${req.body.info.salary}','${today}','9999-01-01');`
 
     connection.beginTransaction(function (err) {
@@ -152,7 +152,7 @@ router.post("/updateinfo", checkJwt, middleware.isAdmin, function (req, res) {
     query1 = `UPDATE titles
             SET to_date='${today}'
             WHERE emp_no = '${req.body.info.emp_no}' and to_date= '9999-01-01';`
-    query2 = `INSERT INTO titles 
+    query2 = `INSERT INTO titles
             VALUES ('${req.body.info.emp_no}','${req.body.info.title}','${today}','9999-01-01');`
 
     connection.beginTransaction(function (err) {
@@ -196,12 +196,10 @@ router.post("/updateinfo", checkJwt, middleware.isAdmin, function (req, res) {
     });
 
   }
-  
+
   res.send(JSON.stringify({ "error": null }));
 
 });
 
 
 module.exports = router;
-
-
