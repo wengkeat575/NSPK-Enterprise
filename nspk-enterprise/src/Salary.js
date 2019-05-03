@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
+<<<<<<< HEAD
 import TopBar from "./TopBar";
 import SearchBar from "react-js-search";
 import { Button } from "@material-ui/core";
@@ -10,13 +11,20 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 
+=======
+import SearchBar from "react-js-search";
+import { Button } from "@material-ui/core";
+>>>>>>> parent of bd9fb51... Revert "Add salary function"
 
 var bg = require("./technology.jpg");
 
 const styles = {
   paperContainer: {
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of bd9fb51... Revert "Add salary function"
     backgroundImage: "url(" + require("./technology.jpg") + ")",
     height: "100vh"
   },
@@ -47,8 +55,13 @@ class Salary extends Component {
     var id = this.id;
     console.log(`fetching ${id}`);
     fetch(`http://localhost:4000/admin/get1employees/${id}`)
+<<<<<<< HEAD
  .then(res => res.json())
   .then(employees =>
+=======
+      .then(res => res.json())
+      .then(employees =>
+>>>>>>> parent of bd9fb51... Revert "Add salary function"
         this.setState({
           data: employees.response ? employees.response : []
         })
@@ -66,9 +79,15 @@ class Salary extends Component {
               padding: "32px",
               margin: "auto",
               width: "680px",
+<<<<<<< HEAD
 
             }}
 
+=======
+              
+            }}
+           
+>>>>>>> parent of bd9fb51... Revert "Add salary function"
           >
             <h2 style={{color:"#131212", textAlign:"center", fontSize:"30px"}}>Employee Salary</h2>
             <div style={{textAlign:"center"}}>
@@ -93,7 +112,10 @@ class Salary extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of bd9fb51... Revert "Add salary function"
                   {this.state.data.map(user => (
                     <TableRow>
                       <TableCell> {user.first_name} </TableCell>
@@ -113,7 +135,10 @@ class Salary extends Component {
             </div>
           </Paper>
         </Paper>
+<<<<<<< HEAD
     
+=======
+>>>>>>> parent of bd9fb51... Revert "Add salary function"
       </div>
     );
   }
