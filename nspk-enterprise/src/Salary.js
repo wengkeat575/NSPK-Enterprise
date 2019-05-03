@@ -1,38 +1,63 @@
 import React, { Component } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
 import TopBar from "./TopBar";
-<<<<<<< HEAD
 import SearchBar from "react-js-search";
 import { Button } from "@material-ui/core";
-=======
->>>>>>> parent of 3860ca7... Add salary function
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+
+
 var bg = require("./technology.jpg");
 
 const styles = {
   paperContainer: {
-<<<<<<< HEAD
+
+
     backgroundImage: "url(" + require("./technology.jpg") + ")",
-=======
-    
->>>>>>> parent of 3860ca7... Add salary function
     height: "100vh"
   },
   height: "100%"
 };
 
-
 class Salary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: []
+    };
+    this.id = 0;
+  }
+
+  onSearchChange(event) {
+    this.id = event.target.value;
+    console.log(event.target.value);
+    this.setState({ a: 1 });
+  }
+
+  searchEmployeeId() {
+    console.log('search');
+    this.componentWillMount();
+  }
+
+  componentWillMount() {
+    var id = this.id;
+    console.log(`fetching ${id}`);
+    fetch(`http://localhost:4000/admin/get1employees/${id}`)
+ .then(res => res.json())
+  .then(employees =>
+        this.setState({
+          data: employees.response ? employees.response : []
+        })
+      );
+  }
   render() {
+    console.log(this.state.data);
     return (
       <div>
-<<<<<<< HEAD
-		  
         {/* <TopBar/> */}
         <Paper style={styles.paperContainer}>
           <Paper
@@ -41,9 +66,9 @@ class Salary extends Component {
               padding: "32px",
               margin: "auto",
               width: "680px",
-              
+
             }}
-           
+
           >
             <h2 style={{color:"#131212", textAlign:"center", fontSize:"30px"}}>Employee Salary</h2>
             <div style={{textAlign:"center"}}>
@@ -57,33 +82,18 @@ class Salary extends Component {
             </Button>
             </div>
             <List>
-=======
-		  {/* <TopBar/> */}
-      <Paper style={styles.paperContainer}>
-        <Paper
-          style={{
-            margin: "48px",
-            padding: "32px",
-            margin: "auto",
-            width: "480px"
-          }}
-        >
-
-          <h2>Salary</h2>
-          <List>
->>>>>>> parent of 3860ca7... Add salary function
               <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell> First Name </TableCell>
                     <TableCell> Last Name </TableCell>
                     <TableCell> Date </TableCell>
+                    <TableCell> Title </TableCell>
                     <TableCell> Salary </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                 
-<<<<<<< HEAD
+
                   {this.state.data.map(user => (
                     <TableRow>
                       <TableCell> {user.first_name} </TableCell>
@@ -93,16 +103,19 @@ class Salary extends Component {
                       <TableCell> {user.salary} </TableCell>
                     </TableRow>
                   ))}
-=======
->>>>>>> parent of 3860ca7... Add salary function
                 </TableBody>
               </Table>
             </List>
+            <div style={{textAlign:"center"}}>
+            <Button variant="contained" size="large" color="secondary">
+              Edit
+            </Button>
+            </div>
+          </Paper>
         </Paper>
-      </Paper>
+    
       </div>
     );
   }
 }
-
   export default Salary;

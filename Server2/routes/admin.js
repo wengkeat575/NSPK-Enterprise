@@ -49,14 +49,10 @@ router.get("/getallemployees/:from", middleware.isAdmin, function(req, res) {
   });
 });
 
-<<<<<<< HEAD
+
 //checkJwt, middleware.isAdmin,
 router.get("/get1employees/:employeeid",  function(req, res) {
-=======
 
-router.get("/get1employees/:employeeid", checkJwt, middleware.isAdmin, function(req, res) {
->>>>>>> parent of 3860ca7... Add salary function
-// router.get("/get1employees/:employeeid", function(req, res) {
 
   const query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,
                 employees.last_name, employees.gender, employees.hire_date, title.title, salary.salary

@@ -27,7 +27,6 @@ class Signout extends Component {
           style={{
             margin: "48px",
             padding: "32px",
-            margin: "auto",
             width: "300px"            
           }}
         >
