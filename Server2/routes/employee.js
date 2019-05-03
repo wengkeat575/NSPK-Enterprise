@@ -23,7 +23,8 @@ const checkJwt = jwt({
 	algorithms: ['RS256']
   });
   
-router.get("/:employeeid", checkJwt, middleware.isThisYourAccount, function(req, res) {
+ // checkJwt, middleware.isThisYourAccount,
+router.get("/:employeeid",function(req, res) {
   console.log("connect ");
 
   const query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,
@@ -70,16 +71,15 @@ router.post("/insert", function (req, res) {
 
       res.send(JSON.stringify({ "status": 400, "error": true }));
     } else {
-
-      res.send(JSON.stringify({ "status": 200, "error": null, "response": results.affectedRows }));
+      let success = false
+      if (results.affectedRows != 0){
+        success = true
+      }
+      res.send(JSON.stringify({ "status": 200, "error": null, "success": success }));
     }
   });
 
 });
-
-
-
-
 
 
 
