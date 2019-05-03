@@ -65,7 +65,7 @@ function ConnectForm(props) {
           </FormControl>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="code">Private Code</InputLabel>
-            <Input id="code" name="code" autoComplete="code" autoFocus />
+            <Input id="code" type="password" name="code" autoComplete="code" autoFocus />
           </FormControl>
           <Button
             type="submit"

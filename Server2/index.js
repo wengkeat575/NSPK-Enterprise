@@ -5,19 +5,11 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const connection = require('./database.js');
-
-// const {checkJwt,checkScopes} = require('./middleware/isLoggedIn')
-
-// Start Auth0 API protect
 const express = require('express');
 const cors = require('cors');
 
 const app = express();
 
-
-// Create a service (the app object is just a callback).
-
-// enhance your app security with Helmet
 app.use(helmet());
 
 app.use(bodyParser.json());
@@ -34,41 +26,13 @@ if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
 	throw 'Make sure you have AUTH0_DOMAIN, and AUTH0_AUDIENCE in your .env file';
 }
 
-// Create a service (the app object is just a callback).
 var employee = require ('./routes/employee')
 var admin = require("./routes/admin");
-
-
-// // Sample public 
-// app.get('/api/public', function(req, res) {
-//   res.json({
-//     message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
-//   });
-// });
-
-// app.get('/api/private', checkJwt, function(req, res) {
-//   res.json({
-//     message: 'Hello from a private endpoint! You need to be authenticated to see this.'
-//   });
-// });
-
-// app.get('/api/private-scoped', checkJwt, function(req, res) {
-//   res.json({
-//     message: 'Hello from a private endpoint! You need to be authenticated and have a scope of read:messages to see this.'
-//   });
-// });
 
 app.use(function(err, req, res, next){
 	next();
 	console.error(err.stack);
 	return res.status(err.status).json({ message: err.message });
-});
-
-app.use(function(req, res, next){
-	// res.locals.currentUser = req.user;
-	// res.locals.error = req.flash("error");
-	// res.locals.success = req.flash("success");	
-	next();
 });
 
 app.use(express.json())  
@@ -82,14 +46,7 @@ app.get('/', function(req, res) {
 	  message: 'Dashboard'
 	});
   });
-// This line is from the Node.js HTTPS documentation.
-var options = {
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-};
 
-// Create an HTTP service.
-// http.createServer(app).listen(3000);
 // Create an HTTPS service identical to the HTTP service.
 
 app.get("/getallemployees", function(req, res) {
@@ -109,6 +66,13 @@ console.log("getall");
   });
 });
 
+
+
+var options = {
+	key: fs.readFileSync('server.key'),
+	cert: fs.readFileSync('server.cert')
+  };
+  
 app.listen(4000);
-//https.createServer(options,app).listen(8080);
+https.createServer(options,app).listen(4100);
 
