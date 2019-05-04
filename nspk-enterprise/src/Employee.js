@@ -79,6 +79,7 @@ class Employee extends React.Component {
               width: "680px"
             }}
           >
+          <div  style={{textAlign:"center"}}>
             <h2> Employees Page {this.state.page} </h2>
             <Button
               variant="contained"
@@ -98,6 +99,7 @@ class Employee extends React.Component {
             >
               Next
             </Button>
+            </div>
             <List>
               <Table>
                 <TableHead>

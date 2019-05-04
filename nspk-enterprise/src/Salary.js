@@ -84,7 +84,7 @@ class Salary extends Component {
                   <TableRow>
                     <TableCell> First Name </TableCell>
                     <TableCell> Last Name </TableCell>
-                    <TableCell> Date </TableCell>
+                    <TableCell> Hired Date </TableCell>
                     <TableCell> Title </TableCell>
                     <TableCell> Salary </TableCell>
                   </TableRow>
