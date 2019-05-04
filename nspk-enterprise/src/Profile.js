@@ -95,11 +95,12 @@ class Profile extends React.Component {
     }
 
     var dob = "March 18";
-    var fullName = "Kat Tran";
+    var lastName = "Tran";
+    var firstName = "Kat";
     var employeeID = "1234";
-    var position = "CEO";
-    var department = "Finance";
-    var departmentManager = "none";
+    var title = "CEO";
+    //var department = "Finance";
+    var salary = "1000000";
 
     console.log(this.state.editMode);
     return (
@@ -139,9 +140,19 @@ class Profile extends React.Component {
                 <TextField
                   required
                   inputProps={fieldProps}
-                  defaultValue={fullName}
-                  id="Full Name"
-                  label="Employee Full Name"
+                  defaultValue={lastName}
+                  id="Last Name"
+                  label="Employee Last Name"
+                  fullWidth
+				  />
+              </Grid>
+              <Grid item xs={8} md={6}>
+                <TextField
+                  required
+                  inputProps={fieldProps}
+                  defaultValue={firstName}
+                  id="First Name"
+                  label="Employee First Name"
                   fullWidth
 				  />
               </Grid>
@@ -169,29 +180,29 @@ class Profile extends React.Component {
                 <TextField
                   required
                   inputProps={fieldProps}
-                  defaultValue={position}
+                  defaultValue={title}
                   id="position"
                   label="Position"
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={8} md={6}>
-                <TextField
-                  required
-                  inputProps={fieldProps}
-                  defaultValue={departmentManager}
-                  id="departmentManager"
-                  label="departmentManager"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={8} md={6}>
+              {/*<Grid item xs={8} md={6}>
                 <TextField
                   required
                   inputProps={fieldProps}
                   defaultValue={department}
                   id="eDept"
                   label="Employee Department"
+                  fullWidth
+    /> 
+    </Grid> */}
+              <Grid item xs={8} md={6}>
+                <TextField
+                  required
+                  inputProps={fieldProps}
+                  defaultValue={salary}
+                  id="salary"
+                  label="current salary"
                   fullWidth
                 />
               </Grid>
@@ -203,7 +214,7 @@ class Profile extends React.Component {
           }}
         >
 		  <SimpleModalWrapped/>
-          {this.state.editMode ? (
+         {/*} {this.state.editMode ? (
             <Button variant="contained" size="large" color="secondary">
               Save
             </Button>
@@ -218,7 +229,7 @@ class Profile extends React.Component {
             >
               Edit
             </Button>
-          )}
+          )} */}
         </div>
             </Grid>
           </React.Fragment>
