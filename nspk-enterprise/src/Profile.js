@@ -75,8 +75,22 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editMode: false
+	  editMode: false,
+	  profile: {}
     };
+  }
+
+  componentWillMount() {
+    this.setState({ profile: {} });
+    const { userProfile, getProfile } = this.props.auth;
+    if (!userProfile) {
+      getProfile((err, profile) => {
+		  console.log('profile',profile)
+        this.setState({ profile });
+      });
+    } else {
+      this.setState({ profile: userProfile });
+    }
   }
 
   handleEdit() {
@@ -84,6 +98,9 @@ class Profile extends React.Component {
   }
 
   render() {
+	const { profile } = this.state;
+	console.log('profile',profile)
+	console.log("name", profile.name)
     if (this.state.editMode) {
       var fieldProps = {
         readOnly: false
@@ -95,8 +112,8 @@ class Profile extends React.Component {
     }
 
     var dob = "March 18";
-    var lastName = "Tran";
-    var firstName = "Kat";
+    var lastName = profile.name;
+    var firstName = profile.name;
     var employeeID = "1234";
     var title = "CEO";
     //var department = "Finance";
