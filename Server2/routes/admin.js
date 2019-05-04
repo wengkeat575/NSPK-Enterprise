@@ -84,9 +84,8 @@ router.get("/get1employees/:employeeid", function(req, res) {
 
 });
 
-
-router.get("/search/:name", checkJwt,function (req, res) {
-// router.get("/search/:name", function (req, res) {
+//checkJwt,
+router.get("/search/:name", function (req, res) {
 
   const query = `SELECT * FROM employees WHERE CONCAT(first_name, ' ', last_name) LIKE '%${req.params.name}%' limit 50;`
 
@@ -108,7 +107,8 @@ function format(date) {
   return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
 }
 
-router.post("/updateinfo", checkJwt, middleware.isAdmin, function (req, res) {
+// checkJwt, middleware.isAdmin,
+router.post("/updateinfo", function (req, res) {
 // router.post("/updateinfo", function (req, res) {
   var today = new Date();
   today = format(today);
@@ -121,23 +121,23 @@ router.post("/updateinfo", checkJwt, middleware.isAdmin, function (req, res) {
             VALUES ('${req.body.info.emp_no}','${req.body.info.salary}','${today}','9999-01-01');`
 
     connection.beginTransaction(function (err) {
-      if (err) { res.send(JSON.stringify({ "affectedRows": 5, "error": true })); }
+      if (err) { res.send(JSON.stringify({"error": true })); }
       connection.query(query01, function (err, result) {
         if (err) {
           connection.rollback(function () {
-            res.send(JSON.stringify({ "affectedRows": 6, "error": true }));
+            res.send(JSON.stringify({ "error": true }));
           });
         }
         connection.query(query02, function (err, result) {
           if (err) {
             connection.rollback(function () {
-              res.send(JSON.stringify({ "affectedRows": 7, "error": true }));
+              res.send(JSON.stringify({ "error": true }));
             });
           }
           connection.commit(function (err) {
             if (err) {
               connection.rollback(function () {
-                res.send(JSON.stringify({ "affectedRows": 8, "error": true }));
+                res.send(JSON.stringify({  "error": true }));
               });
             }
 
@@ -156,23 +156,23 @@ router.post("/updateinfo", checkJwt, middleware.isAdmin, function (req, res) {
             VALUES ('${req.body.info.emp_no}','${req.body.info.title}','${today}','9999-01-01');`
 
     connection.beginTransaction(function (err) {
-      if (err) { res.send(JSON.stringify({ "affectedRows": 1, "error": true })); }
+      if (err) { res.send(JSON.stringify({ "error": true })); }
       connection.query(query1, function (err, result) {
         if (err) {
           connection.rollback(function () {
-            res.send(JSON.stringify({ "affectedRows": 2, "error": true }));
+            res.send(JSON.stringify({"error": true }));
           });
         }
         connection.query(query2, function (err, result) {
           if (err) {
             connection.rollback(function () {
-              res.send(JSON.stringify({ "affectedRows": 3, "error": true }));
+              res.send(JSON.stringify({ "error": true }));
             });
           }
           connection.commit(function (err) {
             if (err) {
               connection.rollback(function () {
-                res.send(JSON.stringify({ "affectedRows": 0, "error": true }));
+                res.send(JSON.stringify({  "error": true }));
               });
             }
 
@@ -190,7 +190,7 @@ router.post("/updateinfo", checkJwt, middleware.isAdmin, function (req, res) {
     connection.query(query, function (error, results, fields) {
 
       if (error) {
-        res.send(JSON.stringify({ "affectedRows": 0, "error": true }));
+        res.send(JSON.stringify({  "error": true }));
       }
 
     });

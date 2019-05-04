@@ -71,16 +71,15 @@ router.post("/insert", function (req, res) {
 
       res.send(JSON.stringify({ "status": 400, "error": true }));
     } else {
-
-      res.send(JSON.stringify({ "status": 200, "error": null, "response": results.affectedRows }));
+      let success = false
+      if (results.affectedRows != 0){
+        success = true
+      }
+      res.send(JSON.stringify({ "status": 200, "error": null, "success": success }));
     }
   });
 
 });
-
-
-
-
 
 
 
