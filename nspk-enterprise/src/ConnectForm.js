@@ -45,42 +45,83 @@ const styles = theme => ({
   },
 });
 
-function ConnectForm(props) {
-  const { classes } = props;
+class ConnectForm extends React.Component {
+	constructor(props){
+		super(props)
+		this.state = {
+			code:'',
+			id:''
+		}
 
-  return (
-    <main className={classes.main}>
-      <CssBaseline />
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Connect to your account
-        </Typography>
-        <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="code">Private Code</InputLabel>
-            <Input id="code" type="password" name="code" autoComplete="code" autoFocus />
-          </FormControl>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-			className={classes.submit}
-			onClick={()=>{alert("clicked")}}
-          >
-            Sign in
-          </Button>
-        </form>
-      </Paper>
-    </main>
-  );
+	}
+
+  onSubmit = (event) =>{
+	  event.preventDefault()
+	  console.log(this.state)
+	  let data = {
+		info: {
+			email: this.props.profiledata.email,
+			secKey:this.state.code,
+			emp_no: this.state.id
+		}
+	}
+	console.log(data)
+	  fetch(`http://52.53.107.243:4000/employees/insert`, {
+		method: 'POST', // or 'PUT'
+		body: JSON.stringify(data), // data can be `string` or {object}!
+		headers:{
+		  'Content-Type': 'application/json'
+		}
+	  })
+	  .then(res => res.json())
+	  .then(result =>{
+		  console.log("get result data")
+		  console.log(result)
+	  });
+  }
+  handleChangeId = (event) =>{
+    this.setState({id: event.target.value});
+  }
+  handleChangeCode = (event) =>{
+    this.setState({code: event.target.value});
+  }
+render(){
+
+	const { classes } = this.props;
+	return (
+	  <main className={classes.main}>
+		<CssBaseline />
+		<Paper className={classes.paper}>
+		  <Avatar className={classes.avatar}>
+			<LockOutlinedIcon />
+		  </Avatar>
+		  <Typography component="h1" variant="h5">
+			Connect to your account
+		  </Typography>
+		  <form className={classes.form}>
+			<FormControl margin="normal" required fullWidth>
+			  <InputLabel htmlFor="email">Employee ID</InputLabel>
+			  <Input id="Id" name="Id" autoComplete="Id" autoFocus value={this.state.id} onChange={this.handleChangeId}/>
+			</FormControl>
+			<FormControl margin="normal" required fullWidth>
+			  <InputLabel htmlFor="code">Private Code</InputLabel>
+			  <Input id="code" type="password" name="code" autoComplete="code" autoFocus value={this.state.code} onChange={this.handleChangeCode}/>
+			</FormControl>
+			<Button
+			  type="submit"
+			  fullWidth
+			  variant="contained"
+			  color="primary"
+			  className={classes.submit}
+			  onClick={this.onSubmit}
+			>
+			  Sign in
+			</Button>
+		  </form>
+		</Paper>
+	  </main>
+	);
+}
 }
 
 ConnectForm.propTypes = {

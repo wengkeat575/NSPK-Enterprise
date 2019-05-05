@@ -14,7 +14,6 @@ import About from "./About";
 
 import Salary from "./Salary";
 
-
 const auth = new Auth();
 
 const handleAuthentication = ({location}) => {

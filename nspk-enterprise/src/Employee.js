@@ -50,7 +50,8 @@ class Employee extends React.Component {
 
   componentWillMount() {
     var page = this.state.desired_page;
-    fetch(`http://localhost:4000/getallemployees?page=${page}`)
+    // fetch(`http://localhost:4000/getallemployees?page=${page}`)
+    fetch(`http://52.53.107.243:4000/getallemployees?page=${page}`)
       .then(res => res.json())
       .then(employees =>
         this.setState({

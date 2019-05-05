@@ -13,7 +13,7 @@ export default class Auth {
     clientID: AUTH_CONFIG.clientId,
     redirectUri: AUTH_CONFIG.callbackUrl,
     responseType: 'token id_token',
-    scope: 'openid profile'
+    scope: 'openid profile email'
   });
 
   constructor() {
@@ -113,7 +113,22 @@ export default class Auth {
     return new Date().getTime() < expiresAt;
   }
 
-  getEmployeeProfile(email){
-	
+  getEmployeeProfile(email,cb) {
+	fetch(`http://52.53.107.243:4000/employees/getLoginEmployee/${email}`)
+	.then(res => res.json())
+	.then(result =>{
+		console.log("get result data")
+		console.log(result)
+		cb(result);
+	});
   }
+
+//   getEmployeeProfile(email){
+// 	fetch(`http://52.53.107.243:4000/employees/getLoginEmployee/${email}`)
+// 	.then(res => res.json())
+// 	.then(employees =>{
+// 		console.log("get employees data")
+// 		console.log(employees)
+// 	});
+//   }
 }
