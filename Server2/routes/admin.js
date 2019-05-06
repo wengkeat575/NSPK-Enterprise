@@ -114,6 +114,7 @@ router.post("/updateinfo", function (req, res) {
   today = format(today);
 
   if (req.body.salary === 1){
+
     query01 = `UPDATE salaries
             SET to_date='${today}'
             WHERE emp_no = '${req.body.info.emp_no}' and to_date= '9999-01-01';`
@@ -185,7 +186,7 @@ router.post("/updateinfo", function (req, res) {
 
   if (req.body.employee === 1) {
     const query = `UPDATE employees
-                  SET birth_date='${req.body.info.birth_date}', first_name='${req.body.info.first_name}', last_name= '${req.body.info.last_name}', gender ='${req.body.info.gender}', hire_date = '${req.body.info.hire_date}'
+                  SET first_name='${req.body.info.first_name}', last_name= '${req.body.info.last_name}'
                   WHERE emp_no= ${req.body.info.emp_no};`
     connection.query(query, function (error, results, fields) {
 

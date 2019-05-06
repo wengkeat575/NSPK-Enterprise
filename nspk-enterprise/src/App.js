@@ -35,6 +35,32 @@ class App extends Component {
     this.props.auth.logout();
   }
 
+  componentWillMount() {
+	this.setState({ profile: {} });
+	const { userProfile, getProfile, getEmployeeProfile, employeeData, setemployeeData,isAuthenticated } = this.props.auth;
+	if (!userProfile) {
+		if (isAuthenticated()){
+			getProfile((err, profile) => {
+				getEmployeeProfile(profile.email,(result)=>{
+					console.log("result",result)
+					if (result.connected){
+						this.setState({
+							employeeData:result.response[0]
+						});
+					}
+				})
+				this.setState({ profile });
+		  });
+		}
+	} else {
+		if (employeeData){
+			this.setState({ profile: userProfile, employeeData });
+		} else{
+			this.setState({ profile: userProfile });
+		}
+	}
+  }
+
   componentDidMount() {
     const { renewSession } = this.props.auth;
 
@@ -45,6 +71,7 @@ class App extends Component {
 
   render() {
     const { isAuthenticated } = this.props.auth;
+    const { employeeData } = this.state;
 
     return (
       <div>
@@ -62,15 +89,21 @@ class App extends Component {
 						<Link style = {{textDecoration: 'none', color: 'white'}}to={"/profile"} className="nav-link">
 							<Button color="inherit">Profile</Button>
 						</Link>
-						<Link style = {{textDecoration: 'none', color: 'white'}}to={"/employees"} className="nav-link">
-							<Button color="inherit">Employee</Button>
-						</Link>
-						<Link style = {{textDecoration: 'none', color: 'white'}}to={"/salary"} className="nav-link">
-							<Button color="inherit">Salary</Button>
-						</Link>
 						<Link style = {{textDecoration: 'none', color: 'white'}}to={"/about"} className="nav-link">
 							<Button color="inherit">About</Button>
 						</Link>
+						{
+							// employeeData &&
+								// employeeData.title == "Technique Leader" &&
+								<div>
+									<Link style = {{textDecoration: 'none', color: 'white'}}to={"/employees"} className="nav-link">
+										<Button color="inherit">Employee</Button>
+									</Link>
+									<Link style = {{textDecoration: 'none', color: 'white'}}to={"/salary"} className="nav-link">
+										<Button color="inherit">Manage</Button>
+									</Link>
+								</div>
+						}
 						
 
 					</div>

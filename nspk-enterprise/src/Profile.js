@@ -14,6 +14,8 @@ import Modal from '@material-ui/core/Modal';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+
+
 const style = {
   marginLeft: 20
 };
@@ -60,12 +62,12 @@ class SimpleModal extends React.Component {
 				this.props.employeeData == undefined &&
 				<Button variant="contained" size="large" color="secondary" onClick={this.handleOpen}>Connect with Database</Button>
 			}
-		  <Modal
+		<Modal
 			aria-labelledby="simple-modal-title"
 			aria-describedby="simple-modal-description"
 			open={this.state.open}
 			onClose={this.handleClose}
-		  >
+		>
 			<div className={classes.paper} style={{top: `${20}%`,left: `${50}%`,transform: `translate(-${50}%, -${50}%)`}}>
 			<ConnectForm profiledata={profiledata}/>
 			</div>
@@ -88,34 +90,36 @@ class Profile extends React.Component {
   constructor(props) {
 	super(props);
 	this.state = {
-	  editMode: false,
-	  profile: {},
-	  employeeData: undefined
-	};
+		editMode: false,
+		profile: {},
+		employeeData: undefined,
+	}
   }
 
   componentWillMount() {
 	this.setState({ profile: {} });
-	const { userProfile, getProfile, getEmployeeProfile } = this.props.auth;
+	const { userProfile, getProfile, getEmployeeProfile, employeeData, setemployeeData } = this.props.auth;
 	if (!userProfile) {
 		getProfile((err, profile) => {
-			// console.log('profile',profile)
 			getEmployeeProfile(profile.email,(result)=>{
 				console.log("result",result)
 				if (result.connected){
-					this.setState({employeeData:result.response[0]})
+					this.setState({
+						employeeData:result.response[0]
+					});
 				}
 			})
 			this.setState({ profile });
 	  });
 	} else {
-	  this.setState({ profile: userProfile });
+		if (employeeData){
+			this.setState({ profile: userProfile, employeeData });
+		} else{
+			this.setState({ profile: userProfile });
+		}
 	}
   }
 
-  handleEdit() {
-	this.setState({ editMode: true });
-  }
 
   render() {
 	const { profile, employeeData } = this.state;
@@ -141,35 +145,7 @@ class Profile extends React.Component {
 			height: "100vh"
 		}}
 		>
-		<Paper
-		//   style={{
-		// 	  margin: "48px",
-		// 	  padding: "32px",
-		// 	  margin: "auto",
-		// 	  width: "480px"
-		// 	}}
-			>
-
-		{/* <Grid 
-		container spacing={16}
-	  justify="center"
-	  alignItems="center">
-          <Grid item xs={12} md={6}>
-            <Typography variant="h6" >
-              Text only
-            </Typography>
-            <div >
-              <List>
-                  <ListItem>
-                    <ListItemText
-                      primary="Single-line item"
-                      secondary={'Secondary text'}
-                    />
-                  </ListItem>
-              </List>
-            </div>
-          </Grid>
-	  </Grid> */}
+		<Paper>
 		  <React.Fragment>
 			<Grid
 			  container
@@ -181,104 +157,65 @@ class Profile extends React.Component {
 			  >
 			<h2>Employee Profile</h2>
 			{
-				this.state.employeeData &&
+				employeeData &&
 				<div>
 					<Grid item xs={12}>
-					<ListItemText
-                      primary="Employee Last Name"
-                      secondary={employeeData.last_name}
-                    />
-
-					{/* <TextField
-					  required
-					  inputProps={fieldProps}
-					  defaultValue={employeeData.last_name}
-					  id="Last Name"
-					  label="Employee Last Name"
-					  fullWidth
-					  /> */}
-					</Grid>
-					<Grid item xs={12}>
-					<ListItemText
-                      primary="Employee First Name"
-                      secondary={employeeData.first_name}
-                    />
-					{/* <TextField
-					  required
-					  inputProps={fieldProps}
-					  defaultValue={employeeData.first_name}
-					  id="First Name"
-					  label="Employee First Name"
-					  fullWidth
-					  /> */}
-					</Grid>
-					<Grid item xs={12}>
-					<ListItemText
-                      primary="Employee ID"
-                      secondary={employeeData.emp_no}
-                    />
-					{/* <TextField
-					  required
-					  inputProps={fieldProps}
-					  defaultValue={employeeData.emp_no}
-					  id="EmployeeID"
-					  label="Employee ID"
-					  fullWidth
-					/> */}
-					</Grid>
-					<Grid item xs={12}>
-					<ListItemText
-                      primary="Date of Birth"
-                      secondary={new Date(employeeData.emp_no).toISOString().slice(0, 10)}
-                    />
-					{/* <TextField
-					  required
-					  inputProps={fieldProps}
-					  defaultValue={employeeData.birth_date}
-					  id="DateOfBirth"
-					  label="Date of Birth"
-					  fullWidth
-					/> */}
-					</Grid>
-					<Grid item xs={12}>
-					<ListItemText
-                      primary="Position"
-                      secondary={employeeData.title}
-                    />
-					{/* <TextField
-					  required
-					  inputProps={fieldProps}
-					  defaultValue={employeeData.title}
-					  id="position"
-					  label="Position"
-					  fullWidth
-					/> */}
-					</Grid>
-					<Grid item xs={12}>
-					<ListItemText
-                      primary="Salary"
-                      secondary={employeeData.salary}
-                    />
-					{/* <TextField
-					  required
-					  inputProps={fieldProps}
-					  defaultValue={employeeData.salary}
-					  id="salary"
-					  label="current salary"
-					  fullWidth
-					/> */}
+						<ListItemText
+						  primary="Employee Last Name"
+						  secondary={employeeData.last_name}
+						/>
+						</Grid>
+						<Grid item xs={12}>
+						<ListItemText
+						  primary="Employee First Name"
+						  secondary={employeeData.first_name}
+						/>
+						</Grid>
+						<Grid item xs={12}>
+						<ListItemText
+						  primary="Employee ID"
+						  secondary={employeeData.emp_no}
+						/>
+						</Grid>
+						<Grid item xs={12}>
+						<ListItemText
+						  primary="Date of Birth"
+						  secondary={new Date(employeeData.emp_no).toISOString().slice(0, 10)}
+						/>
+						</Grid>
+						<Grid item xs={12}>
+						<ListItemText
+						  primary="Position"
+						  secondary={employeeData.title}
+						/>
+						</Grid>
+						<Grid item xs={12}>
+						<ListItemText
+						  primary="Salary"
+						  secondary={employeeData.salary}
+						/>
 					</Grid>
 				</div>
 			}
-			  <div
+				<div
 				  style={{
 					justifyContent: "center",
 					alignItems: "center",
 					marginLeft: "50"
 				  }}
 				>
-		  <SimpleModalWrapped employeeData={this.state.employeeData} profiledata={this.state.profile}/>
-		</div>
+					<SimpleModalWrapped employeeData={this.state.employeeData} profiledata={this.state.profile}/>
+				</div>
+				{
+					// employeeData &&
+						// (employeeData.title == "Senior Engineer" || employeeData.title == "Senior Staff") &&
+						// (employeeData.title == "Senior Engineer" || employeeData.title == "Technique Leader") &&
+						<div>
+							<form action="http://52.53.107.243:8080">
+								<input type="submit" value="Manage Jenkin" />
+							</form>
+						</div>
+				}
 			</Grid>
 		  </React.Fragment>
 		</Paper>
