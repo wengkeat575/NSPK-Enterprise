@@ -59,7 +59,6 @@ console.log("getall");
  
       res.send(JSON.stringify({ "status": 400, "error": true }));
     }else{
-
     //res.send(JSON.stringify({ "status": 200, "error": null, "response": results }));
     res.send(JSON.stringify(results));
     }

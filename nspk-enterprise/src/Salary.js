@@ -43,7 +43,8 @@ class Salary extends Component {
   componentWillMount() {
     var id = this.id;
     console.log(`fetching ${id}`);
-    fetch(`http://localhost:4000/admin/get1employees/${id}`)
+    // fetch(`http://localhost:4000/admin/get1employees/${id}`)
+    fetch(`http://52.53.107.243:4000/admin/get1employees/${id}`)
       .then(res => res.json())
       .then(employees =>
         this.setState({
