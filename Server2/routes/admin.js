@@ -9,22 +9,24 @@ const jwt = require('express-jwt');
 const jwtAuthz = require('express-jwt-authz');
 const jwksRsa = require('jwks-rsa');
 
-// Auth0 functions
+
+
 const checkJwt = jwt({
-	// Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
+	// Dynamically provide a signing key
+	// based on the kid in the header and 
+	// the signing keys provided by the JWKS endpoint.
 	secret: jwksRsa.expressJwtSecret({
 	  cache: true,
 	  rateLimit: true,
 	  jwksRequestsPerMinute: 5,
-	  jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
+	  jwksUri: `https://bobgel.auth0.com/.well-known/jwks.json`
 	}),
-
+  
 	// Validate the audience and the issuer.
-	audience: process.env.AUTH0_AUDIENCE,
-	issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+	// audience: 'https://bobgel.com',
+	issuer: `https://bobgel.auth0.com/`,
 	algorithms: ['RS256']
   });
-
   // Check scropes
 // const checkScopes = jwtAuthz(['read:messages']);
   // console.log(req.user)
@@ -51,7 +53,7 @@ router.get("/getallemployees/:from", middleware.isAdmin, function(req, res) {
 
 
 // router.get("/get1employees/:employeeid", checkJwt, middleware.isAdmin, function(req, res) {
-router.get("/get1employees/:employeeid", function(req, res) {
+router.get("/get1employees/:employeeid",checkJwt, middleware.isAdmin, function(req, res) {
 
   const query = `SELECT employees.emp_no, employees.birth_date , employees.first_name,
                 employees.last_name, employees.gender, employees.hire_date, title.title, salary.salary
@@ -108,97 +110,198 @@ function format(date) {
 }
 
 // checkJwt, middleware.isAdmin,
-router.post("/updateinfo", function (req, res) {
+router.post("/updateinfo",checkJwt, middleware.isAdmin, function (req, res) {
 // router.post("/updateinfo", function (req, res) {
   var today = new Date();
   today = format(today);
 
-  if (req.body.salary === 1){
+  console.log("req.body",req.body)
+//   console.log("req",req)
 
-    query01 = `UPDATE salaries
-            SET to_date='${today}'
-            WHERE emp_no = '${req.body.info.emp_no}' and to_date= '9999-01-01';`
-    query02 = `INSERT INTO salaries
-            VALUES ('${req.body.info.emp_no}','${req.body.info.salary}','${today}','9999-01-01');`
+  if (req.body.emp_no){
+    query01 = `UPDATE IGNORE salaries
+            SET to_date='${today}', salary='${req.body.salary}'
+            WHERE emp_no = '${req.body.emp_no}' and to_date= '9999-01-01';`
+    query02 = `INSERT IGNORE INTO salaries
+            VALUES ('${req.body.emp_no}','${req.body.salary}','${today}','9999-01-01');`
 
     connection.beginTransaction(function (err) {
-      if (err) { res.send(JSON.stringify({"error": true })); }
+      if (err) {
+
+		console.log("error", err)
+		res.send(JSON.stringify({"error": true })); }
       connection.query(query01, function (err, result) {
         if (err) {
+			console.log("error", err)
+
           connection.rollback(function () {
             res.send(JSON.stringify({ "error": true }));
           });
         }
         connection.query(query02, function (err, result) {
           if (err) {
+			  console.log("error", err)
+
             connection.rollback(function () {
               res.send(JSON.stringify({ "error": true }));
             });
           }
           connection.commit(function (err) {
             if (err) {
+				console.log("error", err)
+
               connection.rollback(function () {
                 res.send(JSON.stringify({  "error": true }));
               });
             }
+		  });
+		//   Update Title
+		    query1 = `UPDATE IGNORE titles
+		            SET to_date='${today}', title='${req.body.title}'
+		            WHERE emp_no = '${req.body.emp_no}' and to_date= '9999-01-01';`
+		    query2 = `INSERT IGNORE INTO titles
+		            VALUES ('${req.body.emp_no}','${req.body.title}','${today}','9999-01-01');`
 
-          });
+		    connection.beginTransaction(function (err) {
+		      if (err) {
+
+				console.log("error", err)
+				res.send(JSON.stringify({ "error": true })); }
+		      connection.query(query1, function (err, result) {
+		        if (err) {
+					console.log("error", err)
+
+		          connection.rollback(function () {
+		            res.send(JSON.stringify({"error": true }));
+		          });
+		        }
+		        connection.query(query2, function (err, result) {
+		          if (err) {
+					  console.log("error", err)
+
+		            connection.rollback(function () {
+		              res.send(JSON.stringify({ "error": true }));
+		            });
+		          }
+		          connection.commit(function (err) {
+		            if (err) {
+						console.log("error", err)
+
+		              connection.rollback(function () {
+		                res.send(JSON.stringify({  "error": true }));
+		              });
+		            }
+				  });
+				//   Update employee
+				    const query = `UPDATE employees
+				                  SET first_name='${req.body.first_name}', last_name= '${req.body.last_name}'
+				                  WHERE emp_no= ${req.body.emp_no};`
+				    connection.query(query, function (error, results, fields) {
+				      if (error) {
+						console.log("error", error)
+				        res.send(JSON.stringify({  "error": true }));
+				      }
+					});
+					
+					// Done
+					res.send(JSON.stringify({ "error": null }));
+		        });
+		      });
+			});
         });
       });
     });
+  } else{
+	  res.send(JSON.stringify({  "error": true }));
   }
 
-  if (req.body.title === 1) {
 
-    query1 = `UPDATE titles
-            SET to_date='${today}'
-            WHERE emp_no = '${req.body.info.emp_no}' and to_date= '9999-01-01';`
-    query2 = `INSERT INTO titles
-            VALUES ('${req.body.info.emp_no}','${req.body.info.title}','${today}','9999-01-01');`
+//   if (req.body.salary === 1){
 
-    connection.beginTransaction(function (err) {
-      if (err) { res.send(JSON.stringify({ "error": true })); }
-      connection.query(query1, function (err, result) {
-        if (err) {
-          connection.rollback(function () {
-            res.send(JSON.stringify({"error": true }));
-          });
-        }
-        connection.query(query2, function (err, result) {
-          if (err) {
-            connection.rollback(function () {
-              res.send(JSON.stringify({ "error": true }));
-            });
-          }
-          connection.commit(function (err) {
-            if (err) {
-              connection.rollback(function () {
-                res.send(JSON.stringify({  "error": true }));
-              });
-            }
+//     query01 = `UPDATE salaries
+//             SET to_date='${today}'
+//             WHERE emp_no = '${req.body.info.emp_no}' and to_date= '9999-01-01';`
+//     query02 = `INSERT INTO salaries
+//             VALUES ('${req.body.info.emp_no}','${req.body.info.salary}','${today}','9999-01-01');`
+
+//     connection.beginTransaction(function (err) {
+//       if (err) { res.send(JSON.stringify({"error": true })); }
+//       connection.query(query01, function (err, result) {
+//         if (err) {
+//           connection.rollback(function () {
+//             res.send(JSON.stringify({ "error": true }));
+//           });
+//         }
+//         connection.query(query02, function (err, result) {
+//           if (err) {
+//             connection.rollback(function () {
+//               res.send(JSON.stringify({ "error": true }));
+//             });
+//           }
+//           connection.commit(function (err) {
+//             if (err) {
+//               connection.rollback(function () {
+//                 res.send(JSON.stringify({  "error": true }));
+//               });
+//             }
+
+//           });
+//         });
+//       });
+//     });
+//   }
+
+//   if (req.body.title === 1) {
+
+//     query1 = `UPDATE titles
+//             SET to_date='${today}'
+//             WHERE emp_no = '${req.body.info.emp_no}' and to_date= '9999-01-01';`
+//     query2 = `INSERT INTO titles
+//             VALUES ('${req.body.info.emp_no}','${req.body.info.title}','${today}','9999-01-01');`
+
+//     connection.beginTransaction(function (err) {
+//       if (err) { res.send(JSON.stringify({ "error": true })); }
+//       connection.query(query1, function (err, result) {
+//         if (err) {
+//           connection.rollback(function () {
+//             res.send(JSON.stringify({"error": true }));
+//           });
+//         }
+//         connection.query(query2, function (err, result) {
+//           if (err) {
+//             connection.rollback(function () {
+//               res.send(JSON.stringify({ "error": true }));
+//             });
+//           }
+//           connection.commit(function (err) {
+//             if (err) {
+//               connection.rollback(function () {
+//                 res.send(JSON.stringify({  "error": true }));
+//               });
+//             }
 
 
-          });
-        });
-      });
-    });
-  }
+//           });
+//         });
+//       });
+//     });
+//   }
 
-  if (req.body.employee === 1) {
-    const query = `UPDATE employees
-                  SET first_name='${req.body.info.first_name}', last_name= '${req.body.info.last_name}'
-                  WHERE emp_no= ${req.body.info.emp_no};`
-    connection.query(query, function (error, results, fields) {
+//   if (req.body.employee === 1) {
+//     const query = `UPDATE employees
+//                   SET first_name='${req.body.info.first_name}', last_name= '${req.body.info.last_name}'
+//                   WHERE emp_no= ${req.body.info.emp_no};`
+//     connection.query(query, function (error, results, fields) {
 
-      if (error) {
-        res.send(JSON.stringify({  "error": true }));
-      }
+//       if (error) {
+//         res.send(JSON.stringify({  "error": true }));
+//       }
 
-    });
+//     });
 
-  }
+//   }
 
-  res.send(JSON.stringify({ "error": null }));
+//   res.send(JSON.stringify({ "error": null }));
 
 });
 

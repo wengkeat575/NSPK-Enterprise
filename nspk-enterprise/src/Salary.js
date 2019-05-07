@@ -10,6 +10,7 @@ import SearchBar from "react-js-search";
 import { Button } from "@material-ui/core";
 import EditForm from "./EditForm";
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -44,7 +45,7 @@ class SimpleModal extends React.Component {
 			onClose={this.handleClose}
 		>
 			<div className={classes.paper} style={{top: `${20}%`,left: `${50}%`,transform: `translate(-${50}%, -${50}%)`}}>
-			<EditForm employeeData={employeeData} searchEmployeeId={this.props.searchEmployeeId} handleClose={this.handleClose}/>
+			<EditForm employeeData={employeeData} searchEmployeeId={this.props.searchEmployeeId} handleClose={this.handleClose} auth={this.props.auth}/>
 			</div>
 		  </Modal>
 		</div>
@@ -102,6 +103,30 @@ class Salary extends Component {
 	
   }
 
+  componentWillMount() {
+	this.setState({ profile: {} });
+	const { userProfile, getProfile, getEmployeeProfile, employeeData, setemployeeData } = this.props.auth;
+	if (!userProfile) {
+		getProfile((err, profile) => {
+			getEmployeeProfile(profile.email,(result)=>{
+				console.log("result",result)
+				if (result.connected){
+					this.setState({
+						employeeData:result.response[0]
+					});
+				}
+			})
+			this.setState({ profile });
+	  });
+	} else {
+		if (employeeData){
+			this.setState({ profile: userProfile, employeeData });
+		} else{
+			this.setState({ profile: userProfile });
+		}
+	}
+  }
+
   onSearchChange(event) {
 	this.setState({ id: event.target.value });
   }
@@ -110,13 +135,23 @@ class Salary extends Component {
 	console.log('search');
 	var id = this.state.id;
 	console.log(`fetching ${id}`);
-	fetch(`http://52.53.107.243:4000/admin/get1employees/${id}`)
-	  .then(res => res.json())
-	  .then(employees =>
-		this.setState({
-		  user: employees.response ? employees.response[0] : undefined
-		})
-	  );
+	const { getIdToken } = this.props.auth;
+	const headers = { 'Authorization': `Bearer ${getIdToken()}`}
+    axios.get(`http://52.53.107.243:4000/admin/get1employees/${id}?employeeid=${this.state.employeeData.emp_no}`, { headers })
+      .then(response => {
+		  console.log("response",response)
+        this.setState({
+			user: response.data.response ? response.data.response[0] : undefined
+	    })
+	  })
+      .catch(error => console.log(error));
+	// fetch(`http://52.53.107.243:4000/admin/get1employees/${id}?employeeid=${this.state.employeeData.emp_no}`)
+	//   .then(res => res.json())
+	//   .then(employees =>
+	// 	this.setState({
+	// 	  user: employees.response ? employees.response[0] : undefined
+	// 	})
+	//   );
   }
 
   componentWillMount() {
@@ -193,7 +228,7 @@ class Salary extends Component {
 			  </Table>
 			</List>
 			<div style={{textAlign:"center"}}>
-			<SimpleModalWrapped employeeData={this.state.user} profiledata={this.state.profile} searchEmployeeId={this.searchEmployeeId}/>
+			<SimpleModalWrapped employeeData={this.state.user} profiledata={this.state.profile} searchEmployeeId={this.searchEmployeeId.bind(this)} auth={this.props.auth}/>
 			</div>
 		  </Paper>
 		</Paper>

@@ -10,6 +10,32 @@ const cors = require('cors');
 
 const app = express();
 
+var middleware = require("./middleware");
+
+
+const jwt = require('express-jwt');
+const jwtAuthz = require('express-jwt-authz');
+const jwksRsa = require('jwks-rsa');
+
+const checkJwt = jwt({
+	// Dynamically provide a signing key
+	// based on the kid in the header and 
+	// the signing keys provided by the JWKS endpoint.
+	secret: jwksRsa.expressJwtSecret({
+	  cache: true,
+	  rateLimit: true,
+	  jwksRequestsPerMinute: 5,
+	  jwksUri: `https://bobgel.auth0.com/.well-known/jwks.json`
+	}),
+  
+	// Validate the audience and the issuer.
+	// audience: 'https://bobgel.com',
+	// audience: 'http://52.53.107.243:3000',
+	issuer: `https://bobgel.auth0.com/`,
+	algorithms: ['RS256']
+  });
+
+
 app.use(helmet());
 
 app.use(bodyParser.json());
@@ -49,7 +75,8 @@ app.get('/', function(req, res) {
 
 // Create an HTTPS service identical to the HTTP service.
 
-app.get("/getallemployees", function(req, res) {
+app.get("/getallemployees", checkJwt, middleware.isAdmin, function(req, res) {
+// app.get("/getallemployees" ,function(req, res) {
 console.log("getall");
 	console.log(req.query);
   const query = `SELECT * FROM employees INNER JOIN dept_emp ON employees.emp_no = dept_emp.emp_no INNER JOIN departments ON dept_emp.dept_no = departments.dept_no INNER JOIN titles ON employees.emp_no = titles.emp_no ORDER BY employees.last_name, employees.first_name LIMIT ${req.query.page * 200 - 199},200; `;

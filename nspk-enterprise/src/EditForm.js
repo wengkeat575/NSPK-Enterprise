@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import axios from 'axios';
 
 const styles = theme => ({
   main: {
@@ -66,10 +67,32 @@ class EditForm extends React.Component {
 
 	}
 
-	componentWillMount(){
+	// componentWillMount(){
+	// }
+	componentWillMount() {
 		this.setState({info: this.props.employeeData})
-	}
-
+		this.setState({ profile: {} });
+		const { userProfile, getProfile, getEmployeeProfile, employeeData, setemployeeData } = this.props.auth;
+		if (!userProfile) {
+			getProfile((err, profile) => {
+				getEmployeeProfile(profile.email,(result)=>{
+					console.log("result",result)
+					if (result.connected){
+						this.setState({
+							employeeData:result.response[0]
+						});
+					}
+				})
+				this.setState({ profile });
+		  });
+		} else {
+			if (employeeData){
+				this.setState({ profile: userProfile, employeeData });
+			} else{
+				this.setState({ profile: userProfile });
+			}
+		}
+	  }
 	lastNameChange(event) {
 		this.setState( {
 			info: {
@@ -109,25 +132,41 @@ class EditForm extends React.Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		console.log('body', JSON.stringify(this.state.user))
-		fetch(`http://52.53.107.243:4000/admin/updateinfo`, {
-			method: 'POST', // or 'PUT'
-			body: JSON.stringify(this.state.user), // data can be `string` or {object}!
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-			.then(res => res.json())
-			.then(result => {
-				console.log("result",result)
-				if (result.error == null){
-					alert("Edit Succeed!")
-					this.props.handleClose()
-					// this.props.searchEmployeeId()
-				} else if (result.error != null){
-					alert("Error!")
-				} 
-			});
+		let postbody = JSON.stringify(this.state.info)
+		console.log('postbody', postbody)
+		const { getIdToken } = this.props.auth;
+		const headers = { 'Authorization': `Bearer ${getIdToken()}`}
+		axios.post(`http://52.53.107.243:4000/admin/updateinfo?employeeid=${this.state.employeeData.emp_no}`,this.state.info, { headers })
+		  .then(result => {
+			console.log("result",result)
+			if (result.data.error == null){
+				alert("Edit Succeed!")
+				this.props.searchEmployeeId()
+				this.props.handleClose()
+			} else if (result.data.error != null){
+				alert("Error!")
+			} 
+		  })
+		  .catch(error => console.log(error));
+		
+		//   fetch(`http://52.53.107.243:4000/admin/updateinfo?employeeid=${this.state.employeeData.emp_no}`, {
+		// 	method: 'POST', // or 'PUT'
+		// 	body: postbody, // data can be `string` or {object}!
+		// 	headers: {
+		// 		'Content-Type': 'application/json'
+		// 	}
+		// })
+		// 	.then(res => res.json())
+		// 	.then(result => {
+		// 		console.log("result",result)
+		// 		if (result.error == null){
+		// 			alert("Edit Succeed!")
+		// 			this.props.searchEmployeeId()
+		// 			this.props.handleClose()
+		// 		} else if (result.error != null){
+		// 			alert("Error!")
+		// 		} 
+		// 	});
 	}
 
 render(){

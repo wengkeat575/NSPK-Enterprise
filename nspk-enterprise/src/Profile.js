@@ -69,7 +69,7 @@ class SimpleModal extends React.Component {
 			onClose={this.handleClose}
 		>
 			<div className={classes.paper} style={{top: `${20}%`,left: `${50}%`,transform: `translate(-${50}%, -${50}%)`}}>
-			<ConnectForm profiledata={profiledata}/>
+			<ConnectForm profiledata={profiledata} handleClose={this.handleClose}/>
 			</div>
 		  </Modal>
 		</div>
@@ -207,9 +207,9 @@ class Profile extends React.Component {
 					<SimpleModalWrapped employeeData={this.state.employeeData} profiledata={this.state.profile}/>
 				</div>
 				{
-					// employeeData &&
+					employeeData &&
 						// (employeeData.title == "Senior Engineer" || employeeData.title == "Senior Staff") &&
-						// (employeeData.title == "Senior Engineer" || employeeData.title == "Technique Leader") &&
+						(employeeData.title == "Senior Engineer" || employeeData.title == "Technique Leader") &&
 						<div>
 							<form action="http://52.53.107.243:8080">
 								<input type="submit" value="Manage Jenkin" />
