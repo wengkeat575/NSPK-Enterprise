@@ -77,6 +77,12 @@ class ConnectForm extends React.Component {
 	  .then(result =>{
 		  console.log("get result data")
 		  console.log(result)
+		  if (result.error){
+			alert("Fail to connect")
+		  } else{
+			alert("Connect succesfully")
+		  }
+		  this.props.handleClose()
 	  });
   }
   handleChangeId = (event) =>{
@@ -115,7 +121,7 @@ render(){
 			  className={classes.submit}
 			  onClick={this.onSubmit}
 			>
-			  Sign in
+			  Connect
 			</Button>
 		  </form>
 		</Paper>

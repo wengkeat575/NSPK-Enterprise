@@ -62,14 +62,14 @@ class SimpleModal extends React.Component {
 				this.props.employeeData == undefined &&
 				<Button variant="contained" size="large" color="secondary" onClick={this.handleOpen}>Connect with Database</Button>
 			}
-		  <Modal
+		<Modal
 			aria-labelledby="simple-modal-title"
 			aria-describedby="simple-modal-description"
 			open={this.state.open}
 			onClose={this.handleClose}
-		  >
+		>
 			<div className={classes.paper} style={{top: `${20}%`,left: `${50}%`,transform: `translate(-${50}%, -${50}%)`}}>
-			<ConnectForm profiledata={profiledata}/>
+			<ConnectForm profiledata={profiledata} handleClose={this.handleClose}/>
 			</div>
 		  </Modal>
 		</div>
@@ -90,151 +90,35 @@ class Profile extends React.Component {
   constructor(props) {
 	super(props);
 	this.state = {
-	  editMode: false,
-	  profile: {},
+		editMode: false,
+		profile: {},
 		employeeData: undefined,
-
-		 data : {
-			employee: 1,
-			title: 0,
-			salary: 0,
-			info: {
-				emp_no: "",
-				first_name: "",
-				last_name: "",
-				title: "",
-				salary: ""
-			}
-		}
-
 	}
-		this.lastNameChange = this.lastNameChange.bind(this);
-		this.firstNameChange = this.firstNameChange.bind(this);
-		this.positionChange = this.positionChange.bind(this);
-		this.salaryChange = this.salaryChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillMount() {
 	this.setState({ profile: {} });
-	const { userProfile, getProfile, getEmployeeProfile } = this.props.auth;
+	const { userProfile, getProfile, getEmployeeProfile, employeeData, setemployeeData } = this.props.auth;
 	if (!userProfile) {
 		getProfile((err, profile) => {
-			// console.log('profile',profile)
 			getEmployeeProfile(profile.email,(result)=>{
 				console.log("result",result)
 				if (result.connected){
 					this.setState({
-						employeeData:result.response[0]});
-
-					this.setState(() => ({
-						
-						data: {
-							...this.state.data,
-							info :{
-								...this.state.data.info,
-								emp_no: result.response[0].emp_no,
-								first_name: result.response[0].first_name,
-								last_name: result.response[0].last_name,
-								title: result.response[0].title,
-								salary: result.response[0].salary
-							}
-						}
-					}))
-
-
+						employeeData:result.response[0]
+					});
 				}
 			})
 			this.setState({ profile });
 	  });
 	} else {
-	  this.setState({ profile: userProfile });
+		if (employeeData){
+			this.setState({ profile: userProfile, employeeData });
+		} else{
+			this.setState({ profile: userProfile });
+		}
 	}
   }
-
-	lastNameChange(event) {
-		this.setState(( {
-
-			data: {
-				...this.state.data,
-				info: {
-					...this.state.data.info,
-					last_name: event.target.value
-
-				}
-			}
-		}))
-	}
-	firstNameChange(event) {
-		this.setState(({
-
-			data: {
-				...this.state.data,
-				info: {
-					...this.state.data.info,
-					first_name: event.target.value
-
-				}
-			}
-		}))
-	}
-
-	positionChange(event) {
-		this.setState( ({
-
-			data: {
-				...this.state.data,
-				title: 1,
-				info: {
-					...this.state.data.info,
-					title: event.target.value
-
-				}
-			}
-		}))
-	}
-
-	salaryChange(event) {
-		this.setState( ({
-
-			data: {
-				...this.state.data,
-				salary: 1,
-				info: {
-					...this.state.data.info,
-					salary: event.target.value
-
-				}
-			}
-		}))
-	}
-	
-
-
-	handleSubmit(event) {
-		event.preventDefault();
-
-	
-
-		fetch(`http://52.53.107.243:4000/admin/updateinfo`, {
-			method: 'POST', // or 'PUT'
-			body: JSON.stringify(this.state.data), // data can be `string` or {object}!
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-			.then(res => res.json())
-			.then(result => {
-				if (result.error == null){
-					alert("Edit Succeed!")
-				} else if (result.error != null){
-					alert("Error!")
-				} 
-					
-				
-			});
-	}
-
 
 
   render() {
@@ -261,35 +145,7 @@ class Profile extends React.Component {
 			height: "100vh"
 		}}
 		>
-		<Paper
-		//   style={{
-		// 	  margin: "48px",
-		// 	  padding: "32px",
-		// 	  margin: "auto",
-		// 	  width: "480px"
-		// 	}}
-			>
-
-		{/* <Grid 
-		container spacing={16}
-	  justify="center"
-	  alignItems="center">
-          <Grid item xs={12} md={6}>
-            <Typography variant="h6" >
-              Text only
-            </Typography>
-            <div >
-              <List>
-                  <ListItem>
-                    <ListItemText
-                      primary="Single-line item"
-                      secondary={'Secondary text'}
-                    />
-                  </ListItem>
-              </List>
-            </div>
-          </Grid>
-	  </Grid> */}
+		<Paper>
 		  <React.Fragment>
 			<Grid
 			  container
@@ -301,42 +157,65 @@ class Profile extends React.Component {
 			  >
 			<h2>Employee Profile</h2>
 			{
-				this.state.employeeData &&
+				employeeData &&
 				<div>
-									<form onSubmit={this.handleSubmit}>
-
-										<label>Last Name:</label>	 <br />
-										<input type="text" name="LastName" value={this.state.data.info.last_name} onChange={this.lastNameChange} required /><br />
-										<label> 
-											First Name:
-											</label><br />
-										<input type="text" name="FirstName" value={this.state.data.info.first_name} onChange={this.firstNameChange} required /><br />
-										<label>
-											ID:
-											</label><br />
-										<input type="text" name="ID" value={this.state.data.info.emp_no}  readOnly /><br />
-
-										<label>
-											Position:
-											</label><br />
-										<input type="text" name="Position" value={this.state.data.info.title} onChange={this.positionChange} required /><br />
-										<label>
-											Salary:
-										</label><br />
-										<input type="text" name="Salary" value={this.state.data.info.salary} onChange={this.salaryChange} required /><br /><br />
-										<input type="submit" value="Submit" />
-									</form>
+					<Grid item xs={12}>
+						<ListItemText
+						  primary="Employee Last Name"
+						  secondary={employeeData.last_name}
+						/>
+						</Grid>
+						<Grid item xs={12}>
+						<ListItemText
+						  primary="Employee First Name"
+						  secondary={employeeData.first_name}
+						/>
+						</Grid>
+						<Grid item xs={12}>
+						<ListItemText
+						  primary="Employee ID"
+						  secondary={employeeData.emp_no}
+						/>
+						</Grid>
+						<Grid item xs={12}>
+						<ListItemText
+						  primary="Date of Birth"
+						  secondary={new Date(employeeData.emp_no).toISOString().slice(0, 10)}
+						/>
+						</Grid>
+						<Grid item xs={12}>
+						<ListItemText
+						  primary="Position"
+						  secondary={employeeData.title}
+						/>
+						</Grid>
+						<Grid item xs={12}>
+						<ListItemText
+						  primary="Salary"
+						  secondary={employeeData.salary}
+						/>
+					</Grid>
 				</div>
 			}
-			  <div
+				<div
 				  style={{
 					justifyContent: "center",
 					alignItems: "center",
 					marginLeft: "50"
 				  }}
 				>
-		  <SimpleModalWrapped employeeData={this.state.employeeData} profiledata={this.state.profile}/>
-		</div>
+					<SimpleModalWrapped employeeData={this.state.employeeData} profiledata={this.state.profile}/>
+				</div>
+				{
+					employeeData &&
+						// (employeeData.title == "Senior Engineer" || employeeData.title == "Senior Staff") &&
+						(employeeData.title == "Senior Engineer" || employeeData.title == "Technique Leader") &&
+						<div>
+							<form action="http://52.53.107.243:8080">
+								<input type="submit" value="Manage Jenkin" />
+							</form>
+						</div>
+				}
 			</Grid>
 		  </React.Fragment>
 		</Paper>

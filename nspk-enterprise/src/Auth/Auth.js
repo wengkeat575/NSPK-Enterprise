@@ -7,6 +7,7 @@ export default class Auth {
   idToken;
   expiresAt;
   userProfile;
+  employeeData;
 
   auth0 = new auth0.WebAuth({
     domain: AUTH_CONFIG.domain,
@@ -23,6 +24,9 @@ export default class Auth {
     this.isAuthenticated = this.isAuthenticated.bind(this);
     this.getAccessToken = this.getAccessToken.bind(this);
     this.getIdToken = this.getIdToken.bind(this);
+    this.getemployeeData = this.getemployeeData.bind(this);
+    this.getEmployeeProfile = this.getEmployeeProfile.bind(this);
+    // this.setemployeeData = this.setemployeeData.bind(this);
     this.renewSession = this.renewSession.bind(this);
     this.getProfile = this.getProfile.bind(this);
   }
@@ -46,6 +50,14 @@ export default class Auth {
   getAccessToken() {
     return this.accessToken;
   }
+
+  getemployeeData() {
+    return this.employeeData;
+  }
+
+//   setemployeeData(employeeData) {
+//     this.employeeData = employeeData;
+//   }
 
   getIdToken() {
     return this.idToken;
@@ -72,7 +84,7 @@ export default class Auth {
        } else if (err) {
          this.logout();
          console.log(err);
-         alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
+        //  alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
        }
     });
   }
@@ -119,6 +131,9 @@ export default class Auth {
 	.then(result =>{
 		console.log("get result data")
 		console.log(result)
+		if (result.connected){
+			this.employeeData = result.response[0]
+		}
 		cb(result);
 	});
   }

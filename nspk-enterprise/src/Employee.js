@@ -14,6 +14,8 @@ import TableRow from "@material-ui/core/TableRow";
 import TopBar from "./TopBar";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
+import axios from 'axios';
+
 
 const styles = theme => ({
   root: {
@@ -49,16 +51,52 @@ class Employee extends React.Component {
   }
 
   componentWillMount() {
-    var page = this.state.desired_page;
-    // fetch(`http://localhost:4000/getallemployees?page=${page}`)
-    fetch(`http://52.53.107.243:4000/getallemployees?page=${page}`)
-      .then(res => res.json())
-      .then(employees =>
+	var page = this.state.desired_page;
+	this.setState({ profile: {} });
+	const { userProfile, getProfile, getEmployeeProfile, employeeData, setemployeeData,getIdToken } = this.props.auth;
+	if (!userProfile) {
+		getProfile((err, profile) => {
+			getEmployeeProfile(profile.email,(result)=>{
+				console.log("result",result)
+				if (result.connected){
+					this.setState({
+						employeeData:result.response[0]
+					});
+				}
+			})
+			this.setState({ profile });
+	  });
+	} else {
+		if (employeeData){
+			this.setState({ profile: userProfile, employeeData });
+		} else{
+			this.setState({ profile: userProfile });
+		}
+	}
+	// fetch(`http://localhost:4000/getallemployees?page=${page}`)
+	// let token = this.props.auth.getIdToken()
+	// fetch(`http://52.53.107.243:4000/getallemployees?page=${page}?employeeid=${employeeData.emp_no}`,{
+	// 	headers: new Headers({
+	// 		'Authorization': `Bearer ${token}` 
+	// 	})
+	// })
+    //   .then(res => res.json())
+    //   .then(employees =>
+    //     this.setState({
+    //       data: employees,
+    //       page: page
+    //     })
+	//   );
+	// const { getAccessToken } = this.props.auth;
+    const headers = { 'Authorization': `Bearer ${getIdToken()}`}
+    axios.get(`http://52.53.107.243:4000/getallemployees?page=${page}&employeeid=${employeeData.emp_no}`, { headers })
+      .then(response => {
         this.setState({
-          data: employees,
-          page: page
-        })
-      );
+	      data: response.data,
+	      page: page
+	    })
+	  })
+      .catch(error => console.log(error));
   }
 
   render() {
